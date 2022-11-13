@@ -1,0 +1,20 @@
+{
+    "name": "Controle Analogico",
+    "width": 700,
+    "height": 550,
+    "motors": [
+        {"x": 45, "y": 80, "name": "DC M1", "forward_pin": 22, "backward_pin": 23},
+        {"x": 120, "y": 80, "name": "DC M2", "forward_pin": 24, "backward_pin": 25}
+    ],
+    "labels": [
+        {"x": 15, "y": 35, "width": 25, "height": 20, "borderwidth": 2, "relief": "solid"},
+        {"x": 56, "y": 26, "text": "Motor Control"}
+    ],
+    "buttons": [
+      {"x": 40, "y": 180, "name": "Forward", "pin": 11},
+      {"x": 90, "y": 180, "name": "Backward", "pin": 12},
+      {"x": 40, "y": 250, "name": "Left", "pin": 13},
+      {"x": 90, "y": 250, "name": "Right", "pin": 14},
+      {"x": 70, "y": 320, "name": "Stop", "pin": 15}
+  ]
+}

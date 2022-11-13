@@ -110,5 +110,33 @@
             "mini": ["KEY_1", "KEY_2", "KEY_3", "KEY_4", "KEY_5", "KEY_6", "KEY_7", "KEY_8", "KEY_9", "KEY_0", "KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT", "KEY_OK"],
             "TV": ["KEY_POWER", "KEY_MUTE", "KEY_FAVORITES", "KEY_EPG", "KEY_MENU", "KEY_EXIT", "KEY_1", "KEY_2", "KEY_3", "KEY_4", "KEY_5", "KEY_6", "KEY_7", "KEY_8", "KEY_9", "KEY_0", "KEY_CHANNELUP", "KEY_CHANNELDOWN", "KEY_VOLUMEUP", "KEY_VOLUMEDOWN", "KEY_OK", "KEY_AUDIO", "KEY_SUBTITLE", "KEY_INFO", "KEY_BACK", "KEY_REWIND", "KEY_FASTFORWARD", "KEY_PLAYPAUSE", "KEY_STOP", "KEY_CHANNELUP", "KEY_PREVIOUS", "KEY_NEXT", "KEY_RED", "KEY_GREEN", "KEY_YELLOW", "KEY_BLUE"]
         }
-    }
+    },
+    "motors": [
+        {"x": 316, "y": 80, "name": "DC Motor", "forward_pin": 22, "backward_pin": 23}
+    ],
+    "servos": [
+        {"x": 537, "y": 80, "name": "Servomotor", "pin": 24, "min_angle": -90, "max_angle": 90, "initial_angle": 20}
+    ],
+    
+    "adc": {
+      "mcp_chip": 3008,
+      "potenciometers": [
+        {"x": 40,  "y": 200, "name": "Brightness Potentiometer", "channel": 0},
+        {"x": 270, "y": 200, "name": "Speed Potentiometer",      "channel": 2},
+        {"x": 500, "y": 200, "name": "Angle Potentiometer",      "channel": 6}
+      ]  
+    },
+    "toggles": [
+        {"x": 270, "y": 270, "name": "Direction Toggle Switch", "pin": 15, "off_label": "backward", "on_label": "forward", "is_on": false}
+    ],
+    "labels": [
+        {"x": 15,  "y": 35, "width": 25, "height": 18, "borderwidth": 2, "relief": "solid"},
+        {"x": 56,  "y": 26, "text": "Brightness Control"},
+        
+        {"x": 245, "y": 35, "width": 25, "height": 18, "borderwidth": 2, "relief": "solid"},
+        {"x": 298, "y": 26, "text": "Speed Control"},
+        
+        {"x": 475, "y": 35, "width": 25, "height": 18, "borderwidth": 2, "relief": "solid"},
+        {"x": 531, "y": 26, "text": "Angle Control"}
+    ]
 }
