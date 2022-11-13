@@ -2,7 +2,7 @@ from tkgpio import TkCircuit
 from json import load
 import encoder
 
-# initialize the circuit inside the GUI
+# Simulacao do circuito com os motores e botoes
 with open("motor/simulation.json", "r") as file:
     config_analog = load(file)
 
@@ -14,11 +14,14 @@ def main():
     from gpiozero import Motor, Button
     from time import sleep
 
+    # Contador que simula o numero de gaps do encoder
     global gaps
     gaps = 0
 
+    # Velocidade padrao do motor (sempre entre 0 e 1)
     MOTOR_SPEED = 0.5
 
+    # Inicializa componentes
     motorEsq = Motor(22, 23)
     motorDir = Motor(24, 25)
 
@@ -30,6 +33,7 @@ def main():
     bt_encoder = Button(16)
 
 
+    # Funcoes de controle de direcao do carrinho
     def forward():
         motorEsq.forward(MOTOR_SPEED)
         motorDir.forward(MOTOR_SPEED)
@@ -50,6 +54,8 @@ def main():
         motorEsq.stop()
         motorDir.stop()
 
+
+    # Incrementa o contador de gaps do encoder (simulado pelo pressionar de um botao)
     def count_gaps():
         global gaps
         gaps+=1
