@@ -15,6 +15,7 @@
       {"x": 90, "y": 180, "name": "Backward", "pin": 12},
       {"x": 40, "y": 250, "name": "Left", "pin": 13},
       {"x": 90, "y": 250, "name": "Right", "pin": 14},
-      {"x": 70, "y": 320, "name": "Stop", "pin": 15}
+      {"x": 40, "y": 320, "name": "Stop", "pin": 15},
+      {"x": 250, "y": 80, "name": "Enconder Counter", "pin": 16}
   ]
 }
