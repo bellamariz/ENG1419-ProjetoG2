@@ -10,7 +10,7 @@ analog = TkCircuit(config_analog)
 @analog.run
 def main():
     
-    from gpiozero import Motor, MCP3008, Button
+    from gpiozero import Motor, Button
     from time import sleep
 
     MOTOR_SPEED = 0.5
