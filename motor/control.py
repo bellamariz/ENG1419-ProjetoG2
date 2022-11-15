@@ -1,6 +1,5 @@
 from tkgpio import TkCircuit
 from json import load
-import encoder
 
 # Simulacao do circuito com os motores e botoes
 with open("motor/simulation.json", "r") as file:
@@ -13,6 +12,7 @@ def main():
     
     from gpiozero import Motor, Button, DistanceSensor, LED
     from time import sleep
+    import encoder
 
     # Contador que simula o numero de gaps do encoder
     global gaps, anguloCarrinho
