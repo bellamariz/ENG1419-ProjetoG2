@@ -2,22 +2,30 @@
 
 import math
 
-# Qtde de gaps no encoder
+# Qtde de gaps totais no encoder
 GAPS_ENCODER = 20
-# Raio interno da roda (em cm)
-RAIO_INT_RODA = 4.2
 # Raio externo da roda (em cm)
-RAIO_EXT_RODA = 6.8
+RAIO_RODA = 6.8
 # Circumferencia da roda (em cm)
-CIRCUMF_RODA = 2*math.pi*RAIO_EXT_RODA
+CIRCUMF_RODA = 2*math.pi*RAIO_RODA
 
+# Raio entre metade do carrinho e a roda (em cm)
+RAIO_CARRINHO = 10 #TODO: Medir
 
-# Calcula o comprimento de arco percorrido dado o numero de gaps
-def get_arc_length(gaps):
-    return (gaps * CIRCUMF_RODA)/GAPS_ENCODER
+# Calcula o comprimento de arco percorrido pela roda (dado o num de gaps do encoder detectados)
+def calculaArcoDaRoda(gaps):
+    return (gaps/GAPS_ENCODER)*CIRCUMF_RODA
 
-# Calculo o angulo (em graus) percorrido dado o numero de gaps
-def get_angle(gaps):
-    return (get_arc_length(gaps)/RAIO_EXT_RODA)*(180/math.pi)
+# Calculo o angulo (em graus) percorrido pela roda (dado o num de gaps do encoder detectados)
+def calculaAnguloDaRoda(gaps):
+    return (calculaArcoDaRoda(gaps)/RAIO_RODA)*(180/math.pi)
+
+# Calcula o comprimento de arco percorrido pelo carrinho girando 
+# É o mesmo arco percorrido pelo movimento da roda
+def calculaArcoDoCarrinho(gaps):
+    return calculaArcoDaRoda(gaps)
+
+def calculaAnguloDoCarrinho(gaps):
+    return (calculaArcoDoCarrinho(gaps)/RAIO_CARRINHO)*(180/math.pi)
 
 
