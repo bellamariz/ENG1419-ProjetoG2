@@ -11,7 +11,7 @@ analog = TkCircuit(config_analog)
 @analog.run
 def main():
     
-    from gpiozero import Motor, Button
+    from gpiozero import Motor, Button, DistanceSensor, LED
     from time import sleep
 
     # Contador que simula o numero de gaps do encoder
@@ -31,6 +31,11 @@ def main():
     bt_dir = Button(14)
     bt_parar = Button(15)
     bt_encoder = Button(16)
+
+    distance_sensor = DistanceSensor(trigger=17, echo=18)
+    distance_sensor.threshold_distance = 0.1
+
+    led1 = LED(21)
 
 
     # Funcoes de controle de direcao do carrinho
@@ -54,13 +59,17 @@ def main():
         motorEsq.stop()
         motorDir.stop()
 
-
-    # Incrementa o contador de gaps do encoder (simulado pelo pressionar de um botao)
+    # Incrementa o contador de gaps do encoder
     def count_gaps():
         global gaps
         gaps+=1
 
         print("Gaps: ", gaps)
+
+    # Callback quando contamos um gap do encoder (pressionando botao/alcance sensor distancia)
+    def count_triggered():
+        count_gaps()
+        led1.on()
 
 
     while True:
@@ -70,7 +79,11 @@ def main():
         bt_dir.when_pressed = right
         bt_parar.when_pressed = stop
 
-        bt_encoder.when_pressed = count_gaps
+        bt_encoder.when_pressed = count_triggered
+        bt_encoder.when_released = led1.off
+
+        distance_sensor.when_in_range = count_triggered
+        distance_sensor.when_out_of_range = led1.off
 
         sleep(0.05)
 
