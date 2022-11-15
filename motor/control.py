@@ -15,8 +15,9 @@ def main():
     from time import sleep
 
     # Contador que simula o numero de gaps do encoder
-    global gaps
+    global gaps, anguloCarrinho
     gaps = 0
+    anguloCarrinho = 0
 
     # Velocidade padrao do motor (sempre entre 0 e 1)
     MOTOR_SPEED = 0.5
@@ -61,10 +62,11 @@ def main():
 
     # Incrementa o contador de gaps do encoder
     def count_gaps():
-        global gaps
+        global gaps, anguloCarrinho
         gaps+=1
+        anguloCarrinho = encoder.calculaAnguloDoCarrinho(gaps)
 
-        print("Gaps: ", gaps)
+        print("Gaps: %d - Angulo: %.2f"%(gaps, anguloCarrinho))
 
     # Callback quando contamos um gap do encoder (pressionando botao/alcance sensor distancia)
     def count_triggered():
@@ -73,17 +75,22 @@ def main():
 
 
     while True:
+        # Botoes de controle do motor
         bt_frente.when_pressed = forward
         bt_tras.when_pressed = backward
         bt_esq.when_pressed = left
         bt_dir.when_pressed = right
         bt_parar.when_pressed = stop
 
+        # Gatilho do contador: botao ou distance sensor
         bt_encoder.when_pressed = count_triggered
         bt_encoder.when_released = led1.off
-
         distance_sensor.when_in_range = count_triggered
         distance_sensor.when_out_of_range = led1.off
+
+        # Se o carrinho atingiu um certo angulo (ex: 80 graus), parar os motores
+        if anguloCarrinho >= 80.0:
+            stop()
 
         sleep(0.05)
 
