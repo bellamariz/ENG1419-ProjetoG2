@@ -21,10 +21,15 @@ def main():
 
     # Velocidade padrao do motor (sempre entre 0 e 1)
     MOTOR_SPEED = 0.5
+    # Pinagem de entrada da ponte H (Esq: IN1,IN2 / Dir: IN3,IN4)
+    HBRIDGE_IN1 = 22
+    HBRIDGE_IN2 = 23
+    HBRIDGE_IN3 = 24
+    HBRIDGE_IN4 = 25
 
     # Inicializa componentes
-    motorEsq = Motor(22, 23)
-    motorDir = Motor(24, 25)
+    motorEsq = Motor(HBRIDGE_IN1, HBRIDGE_IN2)
+    motorDir = Motor(HBRIDGE_IN3, HBRIDGE_IN4)
 
     bt_frente = Button(11)
     bt_tras = Button(12)
