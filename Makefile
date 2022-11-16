@@ -1,2 +1,2 @@
 python-build:
-	pip install -r python-imports.txt
+	python3 -m pip install -r python-imports.txt
