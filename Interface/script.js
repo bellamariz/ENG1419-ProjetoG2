@@ -8,6 +8,8 @@ Blockly.Blocks.teste_blockly = {
     this.appendValueInput('ELAPSE')
       .setCheck('Number')
       .appendField("Andar em frente por");
+      this.appendDummyInput()
+        .appendField("Metros");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setInputsInline(true);
@@ -55,6 +57,21 @@ var toolbox = {
     {
       "kind": "block",
       "type": "text_trim"
+    },
+    {
+      "kind": "block",
+      "type": "teste_blockly",
+      "inputs": {
+        "Distance": {
+          "shadow": {
+            "kind": "block",
+            "type": "math_number",
+            "fields": {
+              "NUM": "1.0"
+            }
+          }
+        }
+      }
     }
   ]
 }
