@@ -5,12 +5,12 @@ import math
 # Qtde de gaps totais no encoder
 GAPS_ENCODER = 20
 # Raio externo da roda (em cm)
-RAIO_RODA = 6.8
+RAIO_RODA = 3.2
 # Circumferencia da roda (em cm)
 CIRCUMF_RODA = 2*math.pi*RAIO_RODA
 
 # Raio entre metade do carrinho e a roda (em cm)
-RAIO_CARRINHO = 10 #TODO: Medir
+RAIO_CARRINHO = 7.9
 
 # Calcula o comprimento de arco percorrido pela roda (dado o num de gaps do encoder detectados)
 def calculaArcoDaRoda(gaps):
