@@ -5,7 +5,7 @@ Blockly.Blocks.teste_blockly = {
   // Block for text to sleep.
   init() {
     this.setColour(290);
-    this.appendValueInput('ELAPSE')
+    this.appendValueInput('Distance')
       .setCheck('Number')
       .appendField("Andar em frente por");
       this.appendDummyInput()
@@ -18,9 +18,9 @@ Blockly.Blocks.teste_blockly = {
 
 Blockly.Python.teste_blockly = function (block) {
   // Generate Python for sleeping.
-  const elapse = Blockly.Python.valueToCode(block, 'ELAPSE',
+  const distance = Blockly.Python.valueToCode(block, 'Distance',
     Blockly.Python.ORDER_NONE) || '\'\'';
-  return `qualquer coisa\n`;
+  return `car.foward(${distance})\n`;
 };
 
 var toolbox = {
@@ -79,6 +79,9 @@ let workspace = Blockly.inject('blocklyDiv', {toolbox: toolbox});
 let bloco = document.getElementById("blocklyDiv")
 console.log(bloco)
 
-
-const pythonCode = Blockly.Python.workspaceToCode(workspace);
-
+function updateCode(event) {
+  const pythonCode = Blockly.Python.workspaceToCode(workspace);
+  document.getElementById('blocklyDiv').value = pythonCode;
+  console.log(pythonCode);
+}
+workspace.addChangeListener(updateCode);
