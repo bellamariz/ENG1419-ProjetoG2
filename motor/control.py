@@ -14,13 +14,14 @@ def main():
     from time import sleep
     import encoder
 
-    # Contador que simula o numero de gaps do encoder
-    global gaps, anguloCarrinho
-    gaps = 0
-    anguloCarrinho = 0
+    # Variaveis globais: gaps do encoder, angulo/velocidade/direcao do carrinho
+    global gapsEncoder, angulo, velocidade, direcao
+    gapsEncoder = 0       # entre 0 e 20
+    angulo = 0.0          # entre 0 e 360 graus
+    velocidade = 0.0      # entre 0 e 1
+    direcao = ""          # fren, tras, esq, dir, para
 
-    # Velocidade padrao do motor (sempre entre 0 e 1)
-    MOTOR_SPEED = 0.5
+
     # Pinagem de entrada da ponte H (Esq: IN1,IN2 / Dir: IN3,IN4)
     HBRIDGE_IN1 = 22
     HBRIDGE_IN2 = 23
@@ -37,6 +38,7 @@ def main():
     bt_dir = Button(14)
     bt_parar = Button(15)
     bt_encoder = Button(16)
+    bt_start = Button(10)
 
     distance_sensor = DistanceSensor(trigger=17, echo=18)
     distance_sensor.threshold_distance = 0.1
@@ -45,33 +47,60 @@ def main():
 
 
     # Funcoes de controle de direcao do carrinho
-    def forward():
-        motorEsq.forward(MOTOR_SPEED)
-        motorDir.forward(MOTOR_SPEED)
+    def frente():
+        motorEsq.forward(velocidade)
+        motorDir.forward(velocidade)
 
-    def backward():
-        motorEsq.backward(MOTOR_SPEED)
-        motorDir.backward(MOTOR_SPEED)
+    def tras():
+        motorEsq.backward(velocidade)
+        motorDir.backward(velocidade)
 
-    def left():
-        motorEsq.backward(MOTOR_SPEED)
-        motorDir.forward(MOTOR_SPEED)
+    def esquerda():
+        motorEsq.backward(velocidade)
+        motorDir.forward(velocidade)
 
-    def right():
-        motorEsq.forward(MOTOR_SPEED)
-        motorDir.backward(MOTOR_SPEED)
+    def direita():
+        motorEsq.forward(velocidade)
+        motorDir.backward(velocidade)
 
-    def stop():
+    def parar():
         motorEsq.stop()
         motorDir.stop()
 
+    # Le o input do usuario com as intrucoes de movimento do carrinho
+    def initialize():
+        global angulo, velocidade, direcao
+
+        direcao = input("Para qual direcao deseja andar?\n F - frente\n T - tras\n E - esquerda\n D - direita\n")
+        angulo = float(input("Entre 0.0 e 360.0 graus, para qual angulo deseja ir?\n"))
+        velocidade = float(input("Com quanto de velocidade, entre 0 e 100 porcento?\n"))/100
+
+        print("Vc escolheu ir para %s com angulo %.2f graus e velocidade %.2f .\n"%(direcao, angulo, velocidade))
+        start_car()
+
+    # Faz a movimentacao do carrinho
+    def start_car():
+        global gapsEncoder, angulo, velocidade, direcao
+
+        anguloAtual = encoder.calculaAnguloDoCarrinho(gapsEncoder)
+
+        if anguloAtual < angulo:
+        # Nao chegamos no angulo desejado ainda, continua girando o carrinho
+            if direcao == "E":
+                esquerda()
+            elif direcao == "D":
+                direita()
+        # Terminou de girar ate o angulo desejado
+
+
+    
+    # Para simular o encoder
     # Incrementa o contador de gaps do encoder
     def count_gaps():
-        global gaps, anguloCarrinho
-        gaps+=1
-        anguloCarrinho = encoder.calculaAnguloDoCarrinho(gaps)
+        global gapsEncoder
+        gapsEncoder+=1
 
-        print("Gaps: %d - Angulo: %.2f"%(gaps, anguloCarrinho))
+        print("Gaps: %d"%(gapsEncoder))
 
     # Callback quando contamos um gap do encoder (pressionando botao/alcance sensor distancia)
     def count_triggered():
@@ -81,11 +110,11 @@ def main():
 
     while True:
         # Botoes de controle do motor
-        bt_frente.when_pressed = forward
-        bt_tras.when_pressed = backward
-        bt_esq.when_pressed = left
-        bt_dir.when_pressed = right
-        bt_parar.when_pressed = stop
+        bt_frente.when_pressed = frente
+        bt_tras.when_pressed = tras
+        bt_esq.when_pressed = esquerda
+        bt_dir.when_pressed = direita
+        bt_parar.when_pressed = parar
 
         # Gatilho do contador: botao ou distance sensor
         bt_encoder.when_pressed = count_triggered
@@ -93,9 +122,7 @@ def main():
         distance_sensor.when_in_range = count_triggered
         distance_sensor.when_out_of_range = led1.off
 
-        # Se o carrinho atingiu um certo angulo (ex: 80 graus), parar os motores
-        if anguloCarrinho >= 80.0:
-            stop()
+        bt_start.when_pressed = initialize
 
         sleep(0.05)
 

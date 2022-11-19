@@ -16,7 +16,8 @@
         {"x": 40, "y": 250, "name": "Left", "pin": 13},
         {"x": 90, "y": 250, "name": "Right", "pin": 14},
         {"x": 40, "y": 320, "name": "Stop", "pin": 15},
-        {"x": 250, "y": 80, "name": "Enconder Counter", "pin": 16}
+        {"x": 250, "y": 80, "name": "Enconder Counter", "pin": 16},
+        {"x": 250, "y": 320, "name": "Start", "pin": 10}
     ],
     "distance_sensors": [
         {"x": 250, "y": 140, "name": "Distance Sensor (cm)", "trigger_pin": 17, "echo_pin": 18, "min_distance": 0, "max_distance": 30}
