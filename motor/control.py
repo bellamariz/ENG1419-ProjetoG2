@@ -90,12 +90,12 @@ def main():
 
         print("Vc escolheu ir para %s com angulo %.2f graus e velocidade %.2f .\n"%(direcao, angulo, velocidade))
 
-    # Faz a movimentacao do carrinho
+    # Faz a movimentacao do carrinho (modo automatico)
     def start_car():
         global gapsEncoder, angulo, velocidade, direcao
 
         anguloAtual = encoder.calculaAnguloDoCarrinho(gapsEncoder)
-        print("Angulo atual: ", anguloAtual)
+        print("Angulo atual:", anguloAtual)
 
         # Movimenta o carrinho
         if angulo < 0:
@@ -106,7 +106,7 @@ def main():
             andar()
 
 
-    # Gira o carrinho pra esquerda quando o angulo desejado é negativo
+    # Gira o carrinho pra esquerda quando o angulo desejado é negativo (modo automatico)
     def giro_esquerda(anguloAtual):
         global angulo
 
@@ -116,7 +116,7 @@ def main():
             parar()
             andar()
 
-    # Gira o carrinho pra direita quando o angulo desejado é positivo
+    # Gira o carrinho pra direita quando o angulo desejado é positivo (modo automatico)
     def giro_direita(anguloAtual):
         global angulo
 
@@ -126,7 +126,7 @@ def main():
             parar()
             andar()
 
-    # Anda com o carrinho
+    # Anda com o carrinho (modo automatico)
     def andar():
         global direcao
 
@@ -187,7 +187,9 @@ def main():
             bt_parar.when_pressed = parar
         else:
             start_car()
-            
+
+            # TODO: critério de parada do carrinho
+            # Distancia de um giro completo da roda: 20.1cm --> 20 gaps do encoder
 
         sleep(0.05)
 
