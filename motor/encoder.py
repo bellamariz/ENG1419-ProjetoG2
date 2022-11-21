@@ -12,6 +12,11 @@ CIRCUMF_RODA = 2*math.pi*RAIO_RODA
 # Raio entre metade do carrinho e a roda (em cm)
 RAIO_CARRINHO = 7.9
 
+# Pinagem de leitura do encoder (VCC,GND,SIG)
+SIGNAL = 26
+
+# TODO: Leitura do pino SIGNAL do encoder (lib RPi. GPIO) + contagem da qtde de gaps lidos
+
 # Calcula o comprimento de arco percorrido pela roda (dado o num de gaps do encoder detectados)
 def calculaArcoDaRoda(gaps):
     return (gaps/GAPS_ENCODER)*CIRCUMF_RODA
