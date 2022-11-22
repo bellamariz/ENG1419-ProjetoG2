@@ -11,4 +11,6 @@ Professor: Jan K. S.
 
 ## Bibliotecas
 
-No Python as bibliotecas utilizadas estão disponíveis no arquivo `python-imports.txt`. Elas podem ser instaladas usando o `Makefile` através do comando no terminal: `make build-python`.
+No Python as bibliotecas utilizadas estão disponíveis no arquivo `python-imports.txt`. Elas podem ser instaladas usando o `Makefile` através do comando no terminal: `make build-python-win` for Windows and `make build-python-mac` for MacOS.
+
+A biblioteca **RPi.GPIO** deve ser usada para leitura do encoder, porém ela só funciona e espera ser instalada dentro do ambiente do Raspberry Pi.

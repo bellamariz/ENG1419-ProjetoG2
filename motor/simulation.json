@@ -1,0 +1,27 @@
+{
+    "name": "Controle Analogico",
+    "width": 700,
+    "height": 550,
+    "motors": [
+        {"x": 45, "y": 80, "name": "DC M1", "forward_pin": 3, "backward_pin": 4},
+        {"x": 120, "y": 80, "name": "DC M2", "forward_pin": 27, "backward_pin": 22}
+    ],
+    "labels": [
+        {"x": 15, "y": 35, "width": 25, "height": 20, "borderwidth": 2, "relief": "solid"},
+        {"x": 56, "y": 26, "text": "Motor Control"}
+    ],
+    "buttons": [
+        {"x": 40, "y": 180, "name": "Forward", "pin": 11},
+        {"x": 90, "y": 180, "name": "Backward", "pin": 12},
+        {"x": 40, "y": 250, "name": "Left", "pin": 13},
+        {"x": 90, "y": 250, "name": "Right", "pin": 14},
+        {"x": 40, "y": 320, "name": "Stop", "pin": 15},
+        {"x": 250, "y": 80, "name": "Enconder Counter", "pin": 16},
+        {"x": 250, "y": 320, "name": "Trocar Modo", "pin": 10}
+    ],
+    "leds": [
+        {"x": 250, "y": 220,  "name": "Encoder", "pin": 23},
+        {"x": 310, "y": 220,  "name": "Manual", "pin": 24},
+        {"x": 370, "y": 220,  "name": "Auto", "pin": 25}
+    ]
+}
