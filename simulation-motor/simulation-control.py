@@ -2,7 +2,7 @@ from tkgpio import TkCircuit
 from json import load
 
 # Simulacao do circuito com os motores e botoes
-with open("motor/simulation.json", "r") as file:
+with open("simulation-motor/simulation-circuit.json", "r") as file:
     config_analog = load(file)
 
 analog = TkCircuit(config_analog)
