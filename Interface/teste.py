@@ -4,7 +4,7 @@ app = Flask(__name__)
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
     if request.method == 'POST':
-        language = request.form.get('code')
+        language = request.get_data(as_text=True)
         print(language)
     return render_template("index.html")
 
