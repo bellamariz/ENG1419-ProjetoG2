@@ -1,8 +1,12 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def homepage():
+    if request.method == 'POST':
+        #language = request.form
+        language = request.form.get('code')
+        print(language)
     return render_template("index.html")
 
 

@@ -81,7 +81,7 @@ console.log(bloco)
 
 function updateCode(event) {
   const pythonCode = Blockly.Python.workspaceToCode(workspace);
-  document.getElementById('blocklyDiv').value = pythonCode;
-  console.log(pythonCode);
+  document.getElementById('result').value = pythonCode;
+  console.log(document.getElementById('result').value);
 }
 workspace.addChangeListener(updateCode);
