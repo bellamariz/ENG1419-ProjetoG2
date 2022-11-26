@@ -14,11 +14,8 @@
   <p>
     Our HTML editor updates the webview automatically in real-time as you write code.
   </p>
-  <form method="POST" id="blocklyDiv" style="height: 480px; width: 1300px;" >
-    testando
-    <input id="result" type="hidden" name="code" >
-    <input type = "submit" value = "Submit" />
-  </form>
+  <div method="POST" id="blocklyDiv" style="height: 480px; width: 1300px;" ></div>
+  <button id="buttonCodeSubmit">Submit</button>
   <script src="https://unpkg.com/blockly"></script>
   <script src="https://unpkg.com/blockly/python_compressed"></script>
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
