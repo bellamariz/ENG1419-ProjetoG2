@@ -81,9 +81,14 @@ console.log(bloco)
 
 function updateCode(event) {
   const pythonCode = Blockly.Python.workspaceToCode(workspace);
-  document.getElementById('result').value = pythonCode;
-  console.log(document.getElementById('result').value);
+  document.getElementById('blocklyDiv').value = pythonCode;
+  console.log(document.getElementById('blocklyDiv').value);
+}
+workspace.addChangeListener(updateCode);
 
+function buttonCodeSubmitClickHandler(){
+  let pythonCode = document.getElementById('blocklyDiv').value;
+  
   fetch("http://127.0.0.1:5000", {
     method: 'post',
     body: pythonCode,
@@ -98,8 +103,7 @@ function updateCode(event) {
     }).catch((error) => {
         console.log(error)
     });
-
+    console.log("ta indo");
 }
-workspace.addChangeListener(updateCode);
 
-const httpRequest = new XMLHttpRequest();
+document.getElementById('buttonCodeSubmit').addEventListener("click", buttonCodeSubmitClickHandler);
