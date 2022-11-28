@@ -4,9 +4,10 @@ from time import sleep
 import encoder
 
 # Variaveis globais
-global gapsEncoder, enconderStatus, angulo, velocidade, direcao, modoManual
+global gapsEncoder, enconderStatus, angulo, anguloAtual, velocidade, direcao, modoManual
 gapsEncoder = 0       # total de gaps lidos (entre 0 e 20)
 angulo = 0.0          # entre -360 e 360 graus
+anguloAtual = 0.0
 velocidade = 0.0      # entre 0 e 1
 direcao = ""          # frente ou tras
 modoManual = False    # True - botoes, False - input do usuario
@@ -17,14 +18,13 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # Pinagem de leitura do encoder
-GPIO.setup(encoder.SIGNAL,GPIO.IN)
-encoderStatus = GPIO.input(encoder.SIGNAL_PIN)
+GPIO.setup(encoder.SIGNAL_PIN,GPIO.IN)
 
 # Pinagem de entrada da ponte H (Esq: ENA,IN1,IN2 / Dir: ENB,IN3,IN4)
 HBRIDGE_IN1 = 2
 HBRIDGE_IN2 = 3
-HBRIDGE_IN3 = 27
-HBRIDGE_IN4 = 4
+HBRIDGE_IN3 = 4
+HBRIDGE_IN4 = 27
 
 # Inicializa os motores
 motorEsq = Motor(HBRIDGE_IN1, HBRIDGE_IN2)
@@ -63,58 +63,60 @@ def parar():
 def initialize():
   global angulo, velocidade, direcao
 
-  # direcao = input("Para qual direcao deseja andar, 'frente' ou 'tras'?\n")
-  # angulo = float(input("Para qual angulo deseja girar (em graus)?\n"))
-  # velocidade = float(input("Com quanto de velocidade, entre 0 e 100 porcento?\n"))/100
-  direcao = "frente"
-  angulo = 70.0
-  velocidade = 0.5
+  direcao = input("Para qual direcao deseja andar, 'FRENTE', 'TRAS' ou 'NENHUMA'?\n")
+  angulo = float(input("Para qual angulo deseja girar (em graus)?\n"))
+  velocidade = float(input("Com quanto de velocidade, entre 0 e 100 porcento?\n"))/100
 
-  print("Vc escolheu ir para %s com angulo %.2f graus e velocidade %.2f .\n"%(direcao, angulo, velocidade*100))
+  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direcao, angulo, velocidade*100))
 
 # Faz a movimentacao do carrinho (modo automatico)
 def start_car():
-  global gapsEncoder, angulo, velocidade, direcao
-
-  anguloAtual = encoder.calculaAnguloDoCarrinho(gapsEncoder)
-  print("Angulo atual:", anguloAtual)
+  global angulo
 
   # Movimenta o carrinho
-  if angulo < 0:
-    giro_esquerda(anguloAtual)
-  elif angulo > 0:
-    giro_direita(anguloAtual)
-  else:
+  if angulo == 0.0:
     andar()
+  elif angulo < 0:
+    giro_esquerda()
+  else:
+    giro_direita()
 
+# Calcula o angulo atual
+def calculaAnguloAtual():
+    global gapsEncoder, anguloAtual
+
+    anguloAtual = encoder.calculaAnguloDoCarrinho(gapsEncoder)
+    print("Angulo atual:", anguloAtual)
 
 # Gira o carrinho pra esquerda quando o angulo desejado é negativo (modo automatico)
-def giro_esquerda(anguloAtual):
-  global angulo
+def giro_esquerda():
+  global angulo, anguloAtual
+
+  calculaAnguloAtual()
 
   if anguloAtual < abs(angulo):
     esquerda()
   else:
     parar()
-    andar()
 
 # Gira o carrinho pra direita quando o angulo desejado é positivo (modo automatico)
-def giro_direita(anguloAtual):
-  global angulo
+def giro_direita():
+  global angulo, anguloAtual
+
+  calculaAnguloAtual()
 
   if anguloAtual < abs(angulo):
     direita()
   else:
     parar()
-    andar()
 
 # Anda com o carrinho (modo automatico)
 def andar():
   global direcao
 
-  if direcao == "frente":
+  if direcao == "FRENTE":
     frente()
-  elif direcao == "tras":
+  elif direcao == "TRAS":
     tras()
 
 # Troca o modo de operacao do carrinho
@@ -140,26 +142,28 @@ def inc_gaps():
 
 initialize()
 
-while True: #TODO: substituir while por interrupcao
-  # Faz a leitura do pino do encoder
-  encoderStatus = GPIO.input(encoder.SIGNAL_PIN)
-
-  if encoderStatus == True:
-    inc_gaps()
-
-  print("Status:", encoderStatus)
-
-
+while True:
   # Verifica o modo de operacao do carrinho
   if modoManual:
     # TODO: Botoes de controle manual do motor
     print("Modo Manual\n")
   else:
+    # TODO: melhorar a forma de chamar esse start_car
+    # TODO: depois que girou, tem que resetar o contador dos gaps
     print("Modo Auto\n")
     start_car()
+##    parar()
+    
 
-    # TODO: critério de parada do carrinho
-    # Distancia de um giro completo da roda: 20.1cm --> 20 gaps do encoder
+  # Faz a leitura do pino do encoder via interrupção
+  GPIO.wait_for_edge(encoder.SIGNAL_PIN, GPIO.RISING) 
 
-  sleep(0.1)
+  if GPIO.input(encoder.SIGNAL_PIN) == True:
+    inc_gaps()
+
+  print("Status:", GPIO.input(encoder.SIGNAL_PIN))
+
+  # TODO: critério de parada do carrinho
+  # Distancia de um giro completo da roda: 20.1cm --> 20 gaps do encoder
+
 
