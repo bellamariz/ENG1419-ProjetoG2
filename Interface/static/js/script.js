@@ -1,34 +1,20 @@
-
+import { setupComands } from "./comandos.js";
 console.log("Funcionando");
 
-Blockly.Blocks.teste_blockly = {
-  // Block for text to sleep.
-  init() {
-    this.setColour(290);
-    this.appendValueInput('Distance')
-      .setCheck('Number')
-      .appendField("Andar em frente por");
-      this.appendDummyInput()
-        .appendField("Metros");
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setInputsInline(true);
-  },
-};
+console.log("antes")
+setupComands();
 
-Blockly.Python.teste_blockly = function (block) {
-  // Generate Python for sleeping.
-  const distance = Blockly.Python.valueToCode(block, 'Distance',
-    Blockly.Python.ORDER_NONE) || '\'\'';
-  return `car.foward(${distance})\n`;
-};
-
+console.log("dps")
 var toolbox = {
   "kind": "flyoutToolbox",
   "contents": [
     {
       "kind": "block",
       "type": "controls_if"
+    },
+    {
+      "kind": "block",
+      "type": "controls_whileUntil"
     },
     {
       "kind": "block",
@@ -60,7 +46,19 @@ var toolbox = {
     },
     {
       "kind": "block",
-      "type": "teste_blockly",
+      "type": "moveSense"
+    },
+    {
+      "kind": "block",
+      "type": "turnDirection"
+    },
+    {
+      "kind": "block",
+      "type": "whileUntil"
+    },
+    {
+      "kind": "block",
+      "type": "fwdDistanceMeters",
       "inputs": {
         "Distance": {
           "shadow": {
