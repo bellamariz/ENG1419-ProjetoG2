@@ -3,7 +3,7 @@ from gpiozero import Motor, Button, LED
 from time import sleep
 import encoder
 
-# Variaveis globais
+# [MOVED] Variaveis globais
 global gapsEncoder, enconderStatus, angulo, anguloAtual, velocidade, direcao, modoManual
 gapsEncoder = 0       # total de gaps lidos (entre 0 e 20)
 angulo = 0.0          # entre -360 e 360 graus
@@ -13,24 +13,24 @@ direcao = ""          # frente ou tras
 modoManual = False    # True - botoes, False - input do usuario
 
 
-# Inicializacao da leitura dos pinos GPIO
+# [MOVED] Inicializacao da leitura dos pinos GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# Pinagem de leitura do encoder
+# [MOVED] Pinagem de leitura do encoder
 GPIO.setup(encoder.SIGNAL_PIN,GPIO.IN)
 
-# Pinagem de entrada da ponte H (Esq: ENA,IN1,IN2 / Dir: ENB,IN3,IN4)
+# [MOVED] Pinagem de entrada da ponte H (Esq: ENA,IN1,IN2 / Dir: ENB,IN3,IN4)
 HBRIDGE_IN1 = 10
 HBRIDGE_IN2 = 9
 HBRIDGE_IN3 = 17
 HBRIDGE_IN4 = 27
 
-# Inicializa os motores
+# [MOVED] Inicializa os motores
 motorEsq = Motor(HBRIDGE_IN1, HBRIDGE_IN2)
 motorDir = Motor(HBRIDGE_IN3, HBRIDGE_IN4)
 
-# Funcoes de controle de direcao do carrinho
+# [MOVED] Funcoes de controle de direcao do carrinho
 def frente():
   global velocidade
 
@@ -59,7 +59,7 @@ def parar():
   motorEsq.stop()
   motorDir.stop()
 
-# Le o input do usuario com as intrucoes de movimento do carrinho
+# [MOVED] Le o input do usuario com as intrucoes de movimento do carrinho
 def initialize():
   global angulo, velocidade, direcao
 
@@ -79,7 +79,7 @@ def encoder_handler(pin):
   print("Status:", GPIO.input(pin))
 
 
-# Faz a movimentacao do carrinho (modo automatico)
+# [MOVED] Faz a movimentacao do carrinho (modo automatico)
 def start_car():
   global angulo
 
@@ -122,7 +122,7 @@ def giro_direita():
     parar()
     angulo = 0.0
 
-# Anda com o carrinho (modo automatico)
+# [MOVED] Anda com o carrinho (modo automatico)
 def andar():
   global direcao
 
@@ -133,7 +133,7 @@ def andar():
   else:
     parar()
 
-# Troca o modo de operacao do carrinho
+# [MOVED] Troca o modo de operacao do carrinho
 def trocaModo():
   global modoManual
 
@@ -157,10 +157,10 @@ def inc_gaps():
 parar()
 initialize()
 
-# Interrupcao para a leitura do pino do encoder
+# [MOVED] Interrupcao para a leitura do pino do encoder
 GPIO.add_event_detect(encoder.SIGNAL_PIN, GPIO.RISING, encoder_handler)
 
-# Verifica o modo de operacao do carrinho
+# [MOVED] Verifica o modo de operacao do carrinho
 if modoManual:
   # TODO: Botoes de controle manual do motor
   print("Modo Manual\n")
