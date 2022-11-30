@@ -1,13 +1,6 @@
 import RPi.GPIO as GPIO
 import math
-
-# Initialize GPIO pins
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
-# Encoder signal pin setup
-GPIO.setup(26, GPIO.IN)
-# GPIO.add_event_detect(26, GPIO.RISING, encoder_handler)
+import pins
 
 # Number of gaps in encoder
 TOTAL_GAPS = 20
@@ -17,8 +10,14 @@ WHEEL_RADIUS = 3.2
 WHEEL_CIRCUMF = 2*math.pi*WHEEL_RADIUS
 # Radius between car's midpoint and the wheel
 CAR_RADIUS = 7.9
-# Enconder signal GPIO pin
-PIN = 26
+
+# Initialize GPIO pins
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# Encoder signal pin setup
+GPIO.setup(pins.ENCONDER_SIGNAL_PIN, GPIO.IN)
+# GPIO.add_event_detect(26, GPIO.RISING, encoder_handler)
 
 class Encoder:
 

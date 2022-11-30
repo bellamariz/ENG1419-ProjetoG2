@@ -2,13 +2,7 @@
 
 from gpiozero import Motor
 from .encoder import *
-
-# H Bridge GPIO pins
-# IN3,IN4 (left motor); IN1,IN2 (right motor);
-HBRIDGE_IN1 = 10
-HBRIDGE_IN2 = 9
-HBRIDGE_IN3 = 17
-HBRIDGE_IN4 = 27
+import pins
 
 # CarMotor: class for initializing Motor object
 class CarMotor:
@@ -65,14 +59,12 @@ class CarMotor:
     self.motor.stop()
 
 
-
-
 # MotorControl: class for controlling motors (called by Car)
 class MotorControl:
 
   def __init__(self, speed, angle, direction):
-    self.motorLeft  = CarMotor(speed, angle, direction, HBRIDGE_IN3, HBRIDGE_IN4)
-    self.motorRight = CarMotor(speed, angle, direction, HBRIDGE_IN1, HBRIDGE_IN2)
+    self.motorLeft  = CarMotor(speed, angle, direction, pins.HBRIDGE_IN3, pins.HBRIDGE_IN4)
+    self.motorRight = CarMotor(speed, angle, direction, pins.HBRIDGE_IN1, pins.HBRIDGE_IN2)
 
   # Getters
   def getMotorLeft(self):

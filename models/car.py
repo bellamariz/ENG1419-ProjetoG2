@@ -5,10 +5,6 @@ from .motor import *
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# Encoder signal pin setup
-GPIO.setup(26, GPIO.IN)
-# GPIO.add_event_detect(26, GPIO.RISING, encoder_handler)
-
 # Car: class for defining Car attributes
 class Car:
 
