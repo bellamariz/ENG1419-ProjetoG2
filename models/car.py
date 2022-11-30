@@ -1,30 +1,23 @@
-# Classe Car - implementacao dos metodos de controle do carrinho
 import RPi.GPIO as GPIO
-from .motor import CarMotor
+from .motor import *
 
 # Initialize GPIO pins
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# H Bridge GPIO pins
-# IN3,IN4 (left motor); IN1,IN2 (right motor);
-HBRIDGE_IN1 = 10
-HBRIDGE_IN2 = 9
-HBRIDGE_IN3 = 17
-HBRIDGE_IN4 = 27
+# Encoder signal pin setup
+GPIO.setup(26, GPIO.IN)
+# GPIO.add_event_detect(26, GPIO.RISING, encoder_handler)
 
-# Initialize motors
-global motorLeft, motorRight
-motorLeft  = None
-motorRight = None
-
+# Car: class for defining Car attributes
 class Car:
 
-  def __init__(self):
-    self.speed = 0.3      # (0,1]
-    self.angle = 0.0      # negative: left, positive: right
-    self.direction = "F"  # F - forward, B - backward, N - neither
-    self.modeAuto = True  # True - auto, False - manual
+  def __init__(self, speed = 0.3, angle = 0.0, direction = "F"):
+    self.speed = speed          # float in interval: (0,1]
+    self.angle = angle          # float in interval: [-360, 360] (negative: left, positive: right)
+    self.direction = direction  # F - forward, B - backward, N - neither
+    self.modeAuto = True        # True - auto, False - manual
+    self.motorControl = MotorControl(speed, angle, direction)
 
   # Getters and Setters
   def setSpeed(self, speed):
@@ -51,39 +44,51 @@ class Car:
   def getModeAuto(self):
     return self.modeAuto
 
-  # Car motor functions
-  def moveForward(self):
-    global motorLeft, motorRight
-    motorLeft.motorForward(self.speed)
-    motorRight.motorForward(self.speed)
+  # Car functions
+  # Moves car forwards or backwards based on user input
+  def move(self):
+    if self.direction == "F":
+      self.motorControl.moveForward()
+    elif self.direction == "B":
+      self.motorControl.moveBackward()
+    else:
+      self.motorControl.stop()
 
-  def moveBackward(self):
-    global motorLeft, motorRight
-    motorLeft.motorBackward(self.speed)
-    motorRight.motorBackward(self.speed)
+  # Turns car to left for negative angles and to right for positive angles
+  def turn(self):
+    if self.angulo < 0:
+      self.motorControl.turnLeft()
+    elif self.angulo > 0:
+      self.motorControl.turnRight()
+    else:
+      self.move()
 
-  def stopCar(self):
-    global motorLeft, motorRight
-    motorLeft.motorStop()
-    motorRight.motorStop()
+  # Switch car operation mode
+  def switchMode(self):
+    self.motorControl.stop()
+    self.modeAuto = (not self.modeAuto)
 
-  def turnLeft(self):
-    global motorLeft, motorRight
-    motorLeft.motorBackward(self.speed)
-    motorRight.motorForward(self.speed)
+    if self.modeAuto:
+      print("Modo auto")
+    else:
+      print("Modo manual")
 
-  def turnRight(self):
-    global motorLeft, motorRight
-    motorLeft.motorForward(self.speed)
-    motorRight.motorBackward(self.speed)
-      
+  # Stop car
+  def stop(self):
+    self.motorControl.stop()
+    self.motorControl.resetMotors()
+    
+
+
+# Reads user input
+speed = float(input("Velocidade no intervalo (0, 100]: "))/100
+angle = float(input("Angulo que deseja girar no intervalo [-360, 360]: "))
+direction = input("Direcao que deseja andar, frente -> F, tras -> T: ")
+
+print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direction, angle, speed*100))
 
 # Initialize car
-car = Car()
-
-motorLeft  = CarMotor(car.getSpeed, car.getAngle, car.getDirection, HBRIDGE_IN3, HBRIDGE_IN4)
-motorRight = CarMotor(car.getSpeed, car.getAngle, car.getDirection, HBRIDGE_IN1, HBRIDGE_IN2)
-
+car = Car(speed, angle, direction)
 
 
 
