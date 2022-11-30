@@ -46,12 +46,10 @@ class CarMotor:
 
 
   # Direction control
-  def motorForward(self, inputSpeed = 0.5):
-    # TODO: calibrar valor --> setSpeed(inputSpeed)
+  def motorForward(self):
     self.motor.forward(self.speed)
 
-  def motorBackward(self, inputSpeed = 0.5):
-    # TODO: calibrar valor --> setSpeed(inputSpeed)
+  def motorBackward(self):
     self.motor.backward(self.speed)
 
   def motorStop(self):
@@ -75,25 +73,30 @@ class MotorControl:
   
 
   # Motor functions
-  def moveForward(self):
+  def moveForward(self, inputSpeed = 0.5):
+    # TODO: calibrar velocidade inputSpeed
     self.motorLeft.motorForward(self.speed)
     self.motorRight.motorForward(self.speed)
 
-  def moveBackward(self):
+  def moveBackward(self, inputSpeed = 0.5):
+    # TODO: calibrar velocidade inputSpeed
     self.motorLeft.motorBackward(self.speed)
     self.motorRight.motorBackward(self.speed)
 
+  def turnLeft(self, inputAngle = 45, inputSpeed = 0.5):
+    # TODO: calibrar velocidade inputSpeed + angulo inputAngle
+    self.motorLeft.motorBackward(self.speed)
+    self.motorRight.motorForward(self.speed)
+
+  def turnRight(self, inputAngle = 45, inputSpeed = 0.5):
+    # TODO: calibrar velocidade inputSpeed + angulo inputAngle
+    self.motorLeft.motorForward(self.speed)
+    self.motorRight.motorBackward(self.speed)
+
+  # Stop motors
   def stop(self):
     self.motorLeft.motorStop()
     self.motorRight.motorStop()
-
-  def turnLeft(self):
-    self.motorLeft.motorBackward(self.speed)
-    self.motorRight.motorForward(self.speed)
-
-  def turnRight(self):
-    self.motorLeft.motorForward(self.speed)
-    self.motorRight.motorBackward(self.speed)
 
   # Reset motor configuration when Car.stop() is called
   def resetMotors(self):

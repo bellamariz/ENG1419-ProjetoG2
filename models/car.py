@@ -44,18 +44,18 @@ class Car:
   # Moves car forwards or backwards based on user input
   def move(self):
     if self.direction == "F":
-      self.motorControl.moveForward()
+      self.motorControl.moveForward(self.speed)
     elif self.direction == "B":
-      self.motorControl.moveBackward()
+      self.motorControl.moveBackward(self.speed)
     else:
       self.motorControl.stop()
 
   # Turns car to left for negative angles and to right for positive angles
   def turn(self):
     if self.angulo < 0:
-      self.motorControl.turnLeft()
+      self.motorControl.turnLeft(self.angle, self.speed)
     elif self.angulo > 0:
-      self.motorControl.turnRight()
+      self.motorControl.turnRight(self.angle, self.speed)
     else:
       self.move()
 
