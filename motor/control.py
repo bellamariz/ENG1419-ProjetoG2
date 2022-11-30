@@ -21,9 +21,9 @@ GPIO.setwarnings(False)
 GPIO.setup(encoder.SIGNAL_PIN,GPIO.IN)
 
 # Pinagem de entrada da ponte H (Esq: ENA,IN1,IN2 / Dir: ENB,IN3,IN4)
-HBRIDGE_IN1 = 2
-HBRIDGE_IN2 = 3
-HBRIDGE_IN3 = 4
+HBRIDGE_IN1 = 10
+HBRIDGE_IN2 = 9
+HBRIDGE_IN3 = 17
 HBRIDGE_IN4 = 27
 
 # Inicializa os motores
@@ -69,22 +69,21 @@ def initialize():
 
   print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direcao, angulo, velocidade*100))
 
-  # Interrupcao para a leitura do pino do encoder
-  GPIO.add_event_detect(encoder.SIGNAL_PIN, GPIO.RISING, encoder_handler)
-  
-
 # Handler da interrupcao do pino do encoder
-def encoder_handler():
-  if GPIO.input(encoder.SIGNAL_PIN) == True:
-    inc_gaps()
-    start_car()
+def encoder_handler(pin):
+  # if GPIO.input(encoder.SIGNAL_PIN) == True:
+  
+  inc_gaps()
+  start_car()
 
-  print("Status:", GPIO.input(encoder.SIGNAL_PIN))
+  print("Status:", GPIO.input(pin))
 
 
 # Faz a movimentacao do carrinho (modo automatico)
 def start_car():
   global angulo
+
+  calculaAnguloAtual()
 
   # Movimenta o carrinho
   if angulo < 0:
@@ -105,25 +104,23 @@ def calculaAnguloAtual():
 def giro_esquerda():
   global gapsEncoder, angulo, anguloAtual
 
-  calculaAnguloAtual()
-
   if anguloAtual < abs(angulo):
     esquerda()
   else:
+    print("Terminou de girar! - Angulo Atual: %.4f"%(anguloAtual))
     parar()
-    gapsEncoder = 0
+    angulo = 0.0
 
 # Gira o carrinho pra direita quando o angulo desejado é positivo (modo automatico)
 def giro_direita():
   global gapsEncoder, angulo, anguloAtual
 
-  calculaAnguloAtual()
-
   if anguloAtual < abs(angulo):
     direita()
   else:
+    print("Terminou de girar! - Angulo Atual: %.4f"%(anguloAtual))
     parar()
-    gapsEncoder = 0
+    angulo = 0.0
 
 # Anda com o carrinho (modo automatico)
 def andar():
@@ -157,7 +154,11 @@ def inc_gaps():
 
   print("Gaps: %d"%(gapsEncoder))
 
+parar()
 initialize()
+
+# Interrupcao para a leitura do pino do encoder
+GPIO.add_event_detect(encoder.SIGNAL_PIN, GPIO.RISING, encoder_handler)
 
 # Verifica o modo de operacao do carrinho
 if modoManual:
@@ -166,7 +167,7 @@ if modoManual:
 else:
   print("Modo Auto\n")
   start_car()
-##    parar()
+##  parar()
     
 # TODO: critério de parada do carrinho
 # Distancia de um giro completo da roda: 20.1cm --> 20 gaps do encoder
