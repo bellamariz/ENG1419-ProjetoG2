@@ -1,10 +1,6 @@
 import RPi.GPIO as GPIO
 from .motor import *
 
-# Initialize GPIO pins
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
 # Car: class for defining Car attributes
 class Car:
 
@@ -75,16 +71,20 @@ class Car:
     self.motorControl.resetMotors()
     
 
+if __name__ == "__main__":
+  # Initialize GPIO pins
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
 
-# Reads user input
-speed = float(input("Velocidade no intervalo (0, 100]: "))/100
-angle = float(input("Angulo que deseja girar no intervalo [-360, 360]: "))
-direction = input("Direcao que deseja andar, frente -> F, tras -> T: ")
+  # Reads user input
+  speed = float(input("Velocidade no intervalo (0, 100]: "))/100
+  angle = float(input("Angulo que deseja girar no intervalo [-360, 360]: "))
+  direction = input("Direcao que deseja andar, frente -> F, tras -> T: ")
 
-print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direction, angle, speed*100))
+  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direction, angle, speed*100))
 
-# Initialize car
-car = Car(speed, angle, direction)
+  # Initialize car
+  car = Car(speed, angle, direction)
 
 
 
