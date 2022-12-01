@@ -18,7 +18,7 @@ export function setupComands() {
     Blockly.Python.fwdDistanceMeters = function (block) {
         const distance = Blockly.Python.valueToCode(block, 'Distance',
             Blockly.Python.ORDER_NONE) || '\'\'';
-        return `car.forward(${distance})\n`;
+        return `#car.forward(${distance})\n`;
     };
 
 
@@ -39,10 +39,10 @@ export function setupComands() {
     Blockly.Python.moveSense = function (block) {
         const sentido = block.getFieldValue('SENTIDO');
         if (sentido == "Frente") {
-            return `car.forward(0.01)\n`;
+            return `car.setDirection("F")\ncar.move()\n`;
         }
 
-        return `car.backward(0.01)\n`;
+        return `car.setSpeed("T")\ncar.move()\n`;
     };
 
 
@@ -63,10 +63,10 @@ export function setupComands() {
     Blockly.Python.turnDirection = function (block) {
         const sentido = block.getFieldValue('DIRECAO');
         if (sentido == "Esquerda") {
-            return `car.turn(-1)\n`;
+            return `car.turn(-90)\n`;
         }
 
-        return `car.turn(1)\n`;
+        return `car.turn(90)\n`;
     };
 
 
@@ -88,8 +88,10 @@ export function setupComands() {
 
     //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
     Blockly.Python.turnDirection = function (block) {
-        const graus = block.getFieldValue('GRAUS');
-
+        let graus = block.getFieldValue('GRAUS');
+        if (graus >= 180) {
+            graus = graus-360;
+        }
         return `car.turn(${graus})\n`;
     };
 
