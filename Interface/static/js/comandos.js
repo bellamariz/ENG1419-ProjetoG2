@@ -124,3 +124,25 @@ export function setupComands() {
         return 'while ' + argument0 + ':\n' + branch;
     };
 }
+
+//Gera o bloco de andar pra frente (forward/fwd) por uma distancia definido pelo usuario
+Blockly.Blocks.setSpeed = {
+    init() {
+        this.setColour(290);
+        this.appendValueInput('Speed')
+            .setCheck('Number')
+            .appendField("Define velocidade para");
+        this.appendDummyInput()
+            .appendField("teemos/ticks");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setInputsInline(true);
+    },
+};
+
+//Gera o codigo python de andar pra frente (forward/fwd) por uma distancia definido pelo usuario
+Blockly.Python.setSpeed = function (block) {
+    const speed = Blockly.Python.valueToCode(block, 'Speed',
+        Blockly.Python.ORDER_NONE) || '\'\'';
+    return `car.setSpeed(${speed})\n`;
+};

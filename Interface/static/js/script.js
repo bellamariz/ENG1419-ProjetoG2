@@ -70,6 +70,21 @@ var toolbox = {
           }
         }
       }
+    },
+    {
+      "kind": "block",
+      "type": "setSpeed",
+      "inputs": {
+        "Speed": {
+          "shadow": {
+            "kind": "block",
+            "type": "math_number",
+            "fields": {
+              "NUM": "1.0"
+            }
+          }
+        }
+      }
     }
   ]
 }
