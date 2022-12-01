@@ -1,16 +1,22 @@
 from flask import Flask, render_template, url_for, request
+from subprocess import Popen, PIPE
+import textwrap
+
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
     if request.method == 'POST':
-        language = """
+        script_to_be_run = """
         from models.car import Car
         car = Car()
 
         """
-        language += request.get_data(as_text=True)
-        print(language)
+        script_to_be_run = textwrap.dedent(script_to_be_run)
+        script_to_be_run += request.get_data(as_text=True)
+        #print(language)
+        script_to_be_run = "print(666)"
+        filho_process = Popen(["python", "filho.py", script_to_be_run])
     return render_template("index.html")
 
 
