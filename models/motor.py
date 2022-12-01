@@ -63,6 +63,8 @@ class MotorControl:
   def __init__(self, speed, angle, direction):
     self.motorLeft  = CarMotor(speed, angle, direction, pins.HBRIDGE_IN3, pins.HBRIDGE_IN4)
     self.motorRight = CarMotor(speed, angle, direction, pins.HBRIDGE_IN1, pins.HBRIDGE_IN2)
+    self.speed = speed
+    self.angle = angle
 
   # Getters
   def getMotorLeft(self):
