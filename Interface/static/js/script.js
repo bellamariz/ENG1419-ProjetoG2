@@ -46,11 +46,11 @@ var toolbox = {
     },
     {
       "kind": "block",
-      "type": "moveSense"
+      "type": "moveDirection"
     },
     {
       "kind": "block",
-      "type": "turnDirection"
+      "type": "turnAngle"
     },
     {
       "kind": "block",
