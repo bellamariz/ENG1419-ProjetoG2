@@ -13,7 +13,9 @@ CIRCUMF_RODA = 2*math.pi*RAIO_RODA
 RAIO_CARRINHO = 7.9
 
 # Pinagem de leitura do encoder (VCC,GND,SIG)
-SIGNAL_PIN = 26
+# Enconder signal GPIO pin
+ENCODER1_SIGNAL_PIN = 26
+ENCODER2_SIGNAL_PIN = 4
 
 # TODO: Leitura do pino SIGNAL do encoder (lib RPi. GPIO) + contagem da qtde de gaps lidos
 

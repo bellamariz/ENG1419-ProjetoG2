@@ -3,173 +3,168 @@ from gpiozero import Motor, Button, LED
 from time import sleep
 import encoder
 
-# [MOVED] Variaveis globais
-global gapsEncoder, enconderStatus, angulo, anguloAtual, velocidade, direcao, modoManual
-gapsEncoder = 0       # total de gaps lidos (entre 0 e 20)
-angulo = 0.0          # entre -360 e 360 graus
-anguloAtual = 0.0
-velocidade = 0.0      # entre 0 e 1
-direcao = ""          # frente ou tras
-modoManual = False    # True - botoes, False - input do usuario
 
 
-# [MOVED] Inicializacao da leitura dos pinos GPIO
+################
+# VARIAVEIS GLOBAIS E CONSTANTES
+################
+
+global razaoEncoders, gapCounter1, gapCounter2, anguloDoCarro, inputDirecao, inputAngulo, inputVelocidade
+razaoEncoders = 0     # gapCounter1 / gapCounter2
+gapCounter1 = 0       # total de gaps lidos (entre 0 e 20)
+gapCounter2 = 0       # total de gaps lidos (entre 0 e 20)
+anguloDoCarro = 0.0
+inputAngulo = 0.0          # entre -180 (esq) e 180 (dir) graus
+inputVelocidade = 0.0      # entre 0 e 1
+inputDirecao = ""          # frente ou tras
+
+# H Bridge GPIO pins
+# IN3,IN4 (left motor); IN1,IN2 (right motor);
+HBRIDGE_IN1 = 18
+HBRIDGE_IN2 = 23
+HBRIDGE_IN3 = 24
+HBRIDGE_IN4 = 25
+
+
+
+################
+# INICIALIZACOES
+################
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# [MOVED] Pinagem de leitura do encoder
-GPIO.setup(encoder.SIGNAL_PIN,GPIO.IN)
+GPIO.setup(encoder.ENCODER1_SIGNAL_PIN,GPIO.IN)
+GPIO.setup(encoder.ENCODER2_SIGNAL_PIN,GPIO.IN)
 
-# [MOVED] Pinagem de entrada da ponte H (Esq: ENA,IN1,IN2 / Dir: ENB,IN3,IN4)
-HBRIDGE_IN1 = 10
-HBRIDGE_IN2 = 9
-HBRIDGE_IN3 = 17
-HBRIDGE_IN4 = 27
+motorEsq = Motor(HBRIDGE_IN3, HBRIDGE_IN4) # IN3 E IN4 (motor esquerda)
+motorDir = Motor(HBRIDGE_IN1, HBRIDGE_IN2) # IN1 E IN2 (motor direita) 
 
-# [MOVED] Inicializa os motores
-motorEsq = Motor(HBRIDGE_IN1, HBRIDGE_IN2)
-motorDir = Motor(HBRIDGE_IN3, HBRIDGE_IN4)
+def initialize():
+  global inputDirecao, inputAngulo, inputVelocidade
 
-# [MOVED] Funcoes de controle de direcao do carrinho
+  inputDirecao = input("Para qual direcao deseja andar, 'FRENTE', 'TRAS' ou 'NENHUMA'?\n")
+  inputAngulo = float(input("Para qual angulo deseja girar (em graus)?\n"))
+  inputVelocidade = float(input("Com quanto de velocidade, entre 0 e 100 porcento?\n"))/100
+
+  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(inputDirecao, inputAngulo, inputVelocidade*100))
+
+
+
+################
+# CONTROLE DO MOTOR
+################
+
 def frente():
-  global velocidade
-
-  motorEsq.forward(velocidade)
-  motorDir.forward(velocidade)
+  global inputVelocidade
+  motorEsq.forward(inputVelocidade)
+  motorDir.forward(inputVelocidade)
 
 def tras():
-  global velocidade
-
-  motorEsq.backward(velocidade)
-  motorDir.backward(velocidade)
+  global inputVelocidade
+  motorEsq.backward(inputVelocidade)
+  motorDir.backward(inputVelocidade)
 
 def esquerda():
-  global velocidade
-
-  motorEsq.backward(velocidade)
-  motorDir.forward(velocidade)
+  global inputVelocidade
+  motorEsq.backward(inputVelocidade)
+  motorDir.forward(inputVelocidade)
 
 def direita():
-  global velocidade
-
-  motorEsq.forward(velocidade)
-  motorDir.backward(velocidade)
+  global inputVelocidade
+  motorEsq.forward(inputVelocidade)
+  motorDir.backward(inputVelocidade)
 
 def parar():
   motorEsq.stop()
   motorDir.stop()
 
-# [MOVED] Le o input do usuario com as intrucoes de movimento do carrinho
-def initialize():
-  global angulo, velocidade, direcao
 
-  direcao = input("Para qual direcao deseja andar, 'FRENTE', 'TRAS' ou 'NENHUMA'?\n")
-  angulo = float(input("Para qual angulo deseja girar (em graus)?\n"))
-  velocidade = float(input("Com quanto de velocidade, entre 0 e 100 porcento?\n"))/100
 
-  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direcao, angulo, velocidade*100))
+################
+# CONTROLE DO CARRINHO: GIRAR
+################
 
-# Handler da interrupcao do pino do encoder
-def encoder_handler(pin):
-  # if GPIO.input(encoder.SIGNAL_PIN) == True:
+def girar():
+  global inputAngulo
   
-  inc_gaps()
-  start_car()
-
-  print("Status:", GPIO.input(pin))
-
-
-# [MOVED] Faz a movimentacao do carrinho (modo automatico)
-def start_car():
-  global angulo
-
-  calculaAnguloAtual()
-
-  # Movimenta o carrinho
-  if angulo < 0:
+  if inputAngulo < 0:
     giro_esquerda()
-  elif angulo > 0:
+  elif inputAngulo > 0:
     giro_direita()
   else:
     andar()
 
-# Calcula o angulo atual
-def calculaAnguloAtual():
-    global gapsEncoder, anguloAtual
-
-    anguloAtual = encoder.calculaAnguloDoCarrinho(gapsEncoder)
-    print("Angulo atual:", anguloAtual)
-
-# Gira o carrinho pra esquerda quando o angulo desejado é negativo (modo automatico)
 def giro_esquerda():
-  global gapsEncoder, angulo, anguloAtual
+  global inputAngulo, anguloDoCarro, gapCounter1
 
-  if anguloAtual < abs(angulo):
+  anguloDoCarro = encoder.calculaAnguloDoCarrinho(gapCounter1)
+
+  if anguloDoCarro < abs(inputAngulo):
     esquerda()
   else:
-    print("Terminou de girar! - Angulo Atual: %.4f"%(anguloAtual))
+    print("Terminou de girar! - Angulo Atual: %.4f"%(anguloDoCarro))
     parar()
-    angulo = 0.0
 
-# Gira o carrinho pra direita quando o angulo desejado é positivo (modo automatico)
 def giro_direita():
-  global gapsEncoder, angulo, anguloAtual
+  global inputAngulo, anguloDoCarro, gapCounter1
 
-  if anguloAtual < abs(angulo):
+  anguloDoCarro = encoder.calculaAnguloDoCarrinho(gapCounter1)
+
+  if anguloDoCarro < abs(inputAngulo):
     direita()
   else:
-    print("Terminou de girar! - Angulo Atual: %.4f"%(anguloAtual))
+    print("Terminou de girar! - Angulo Atual: %.4f"%(anguloDoCarro))
     parar()
-    angulo = 0.0
 
-# [MOVED] Anda com o carrinho (modo automatico)
+
+
+################
+# CONTROLE DO CARRINHO: ANDAR
+################
+
 def andar():
-  global direcao
+  global inputDirecao
 
-  if direcao == "FRENTE":
+  if inputDirecao == "FRENTE":
     frente()
-  elif direcao == "TRAS":
+  elif inputDirecao == "TRAS":
     tras()
   else:
     parar()
 
-# [MOVED] Troca o modo de operacao do carrinho
-def trocaModo():
-  global modoManual
 
-  # Para os motores pra trocar o modo
-  parar()
-  # Troca o modo do carrinho
-  modoManual = (not modoManual)
 
-  if modoManual:
-    print("Modo controle por botoes")
-  else:
-    print("Modo controle automatico lido da entrada")
+################
+# ENCODER
+################
 
-# Incrementa o contador de gaps do encoder
-def inc_gaps():
-  global gapsEncoder
-  gapsEncoder+=1
+def encoder1_handler(pin):
+  global gapCounter1, gapCounter2
+  gapCounter1+=1
 
-  print("Gaps: %d"%(gapsEncoder))
+  if gapCounter1 > 100:
+    gapCounter1 = 0
+    gapCounter2 = 0
+  
+def encoder2_handler(pin):
+  global gapCounter1, gapCounter2
+  gapCounter2+=1
 
-parar()
+  ratioEncoders()
+
+def ratioEncoders():
+  global razaoEncoders, gapCounter1, gapCounter2
+  razaoEncoders = gapCounter1/gapCounter2
+  print("Razao: %.5f"%(razaoEncoders))
+
+GPIO.add_event_detect(encoder.ENCODER1_SIGNAL_PIN, GPIO.RISING, encoder1_handler)
+GPIO.add_event_detect(encoder.ENCODER2_SIGNAL_PIN, GPIO.RISING, encoder2_handler)
+
+
+
+################
+# INICIAR
+################
+
 initialize()
-
-# [MOVED] Interrupcao para a leitura do pino do encoder
-GPIO.add_event_detect(encoder.SIGNAL_PIN, GPIO.RISING, encoder_handler)
-
-# [MOVED] Verifica o modo de operacao do carrinho
-if modoManual:
-  # TODO: Botoes de controle manual do motor
-  print("Modo Manual\n")
-else:
-  print("Modo Auto\n")
-  start_car()
-##  parar()
-    
-# TODO: critério de parada do carrinho
-# Distancia de um giro completo da roda: 20.1cm --> 20 gaps do encoder
-
-
