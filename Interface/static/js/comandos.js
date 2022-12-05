@@ -23,7 +23,7 @@ export function setupComands() {
 
 
     //Gera o bloco de andar em um sentido por uma distancia infinitesimal
-    Blockly.Blocks.moveSense = {
+    Blockly.Blocks.moveDirection = {
         init() {
             this.setColour(290);
             this.appendDummyInput()
@@ -36,7 +36,7 @@ export function setupComands() {
     };
 
     //Gera o codigo python de andar em um sentido por uma distancia infinitesimal
-    Blockly.Python.moveSense = function (block) {
+    Blockly.Python.moveDirection = function (block) {
         const sentido = block.getFieldValue('SENTIDO');
         if (sentido == "Frente") {
             return `car.setDirection("F")\ncar.move()\n`;
@@ -47,7 +47,7 @@ export function setupComands() {
 
 
     //Gera o bloco de virar em alguma direcao em um angulo infinitesimal
-    Blockly.Blocks.turnDirection = {
+    Blockly.Blocks.turnAngle = {
         init() {
             this.setColour(290);
             this.appendDummyInput()
@@ -60,7 +60,7 @@ export function setupComands() {
     };
 
     //Gera o codigo python de andar em um sentido por uma distancia infinitesimal
-    Blockly.Python.turnDirection = function (block) {
+    Blockly.Python.turnAngle = function (block) {
         const sentido = block.getFieldValue('DIRECAO');
         if (sentido == "Esquerda") {
             return `car.turn(-90)\n`;
@@ -71,7 +71,7 @@ export function setupComands() {
 
 
     //Gera o bloco de virar em alguma direcao em um angulo especificado pelo usuario
-    Blockly.Blocks.turnDirection = {
+    Blockly.Blocks.turnAngle = {
         init() {
             Blockly.FieldAngle.OFFSET = 90;
             Blockly.FieldAngle.CLOCKWISE = true;
@@ -87,7 +87,7 @@ export function setupComands() {
     };
 
     //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
-    Blockly.Python.turnDirection = function (block) {
+    Blockly.Python.turnAngle = function (block) {
         let graus = block.getFieldValue('GRAUS');
         if (graus >= 180) {
             graus = graus-360;
