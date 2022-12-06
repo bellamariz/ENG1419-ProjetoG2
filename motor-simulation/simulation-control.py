@@ -2,7 +2,7 @@ from tkgpio import TkCircuit
 from json import load
 
 # Simulacao do circuito com os motores e botoes
-with open("simulation-motor/simulation-circuit.json", "r") as file:
+with open("motor-simulation\simulation-circuit.json", "r") as file:
     config_analog = load(file)
 
 analog = TkCircuit(config_analog)
@@ -20,7 +20,7 @@ def main():
     angulo = 0.0          # entre -360 e 360 graus
     velocidade = 0.0      # entre 0 e 1
     direcao = ""          # frente ou tras
-    modoManual = True     # True - botoes, False - input
+    modoManual = False     # True - botoes, False - input
 
 
     # Pinagem de entrada da ponte H (Esq: ENA,IN1,IN2 / Dir: ENB,IN3,IN4)
@@ -186,10 +186,13 @@ def main():
             bt_dir.when_pressed = direita
             bt_parar.when_pressed = parar
         else:
-            start_car()
+            # start_car()
 
             # TODO: critério de parada do carrinho
             # Distancia de um giro completo da roda: 20.1cm --> 20 gaps do encoder
+
+            # REPLACE
+            pass
 
         sleep(0.05)
 
