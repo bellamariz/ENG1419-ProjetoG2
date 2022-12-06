@@ -18,7 +18,8 @@ export function setupComands() {
     Blockly.Python.fwdDistanceMeters = function (block) {
         const distance = Blockly.Python.valueToCode(block, 'Distance',
             Blockly.Python.ORDER_NONE) || '\'\'';
-        return `#car.forward(${distance})\n`;
+        return `frente()\n`;
+        return `car.forward(${distance})\n`;
     };
 
 
@@ -47,7 +48,7 @@ export function setupComands() {
 
 
     //Gera o bloco de virar em alguma direcao em um angulo infinitesimal
-    Blockly.Blocks.turnAngle = {
+    Blockly.Blocks.turnLeftOrRight = {
         init() {
             this.setColour(290);
             this.appendDummyInput()
@@ -59,10 +60,12 @@ export function setupComands() {
         },
     };
 
+    
+
     //Gera o codigo python de andar em um sentido por uma distancia infinitesimal
-    Blockly.Python.turnAngle = function (block) {
-        const sentido = block.getFieldValue('DIRECAO');
-        if (sentido == "Esquerda") {
+    Blockly.Python.turnLeftOrRight = function (block) {
+        const direcao = block.getFieldValue('DIRECAO');
+        if (direcao == "Esquerda") {
             return `car.turn(-90)\n`;
         }
 

@@ -50,6 +50,10 @@ var toolbox = {
     },
     {
       "kind": "block",
+      "type": "turnLeftOrRight"
+    },
+    {
+      "kind": "block",
       "type": "turnAngle"
     },
     {
@@ -80,7 +84,7 @@ var toolbox = {
             "kind": "block",
             "type": "math_number",
             "fields": {
-              "NUM": "1.0"
+              "NUM": "0.3"
             }
           }
         }
