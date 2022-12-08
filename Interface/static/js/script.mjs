@@ -10,42 +10,6 @@ var toolbox = {
   "contents": [
     {
       "kind": "block",
-      "type": "controls_if"
-    },
-    {
-      "kind": "block",
-      "type": "controls_whileUntil"
-    },
-    {
-      "kind": "block",
-      "type": "controls_repeat_ext"
-    },
-    {
-      "kind": "block",
-      "type": "logic_compare"
-    },
-    {
-      "kind": "block",
-      "type": "math_number"
-    },
-    {
-      "kind": "block",
-      "type": "math_arithmetic"
-    },
-    {
-      "kind": "block",
-      "type": "text"
-    },
-    {
-      "kind": "block",
-      "type": "text_print"
-    },
-    {
-      "kind": "block",
-      "type": "text_trim"
-    },
-    {
-      "kind": "block",
       "type": "moveDirection"
     },
     {
@@ -58,40 +22,31 @@ var toolbox = {
     },
     {
       "kind": "block",
-      "type": "whileUntil"
-    },
-    {
-      "kind": "block",
       "type": "fwdDistanceMeters",
-      "inputs": {
-        "Distance": {
-          "shadow": {
-            "kind": "block",
-            "type": "math_number",
-            "fields": {
-              "NUM": "1.0"
-            }
-          }
-        }
-      }
     },
     {
       "kind": "block",
       "type": "setSpeed",
-      "inputs": {
-        "Speed": {
-          "shadow": {
-            "kind": "block",
-            "type": "math_number",
-            "fields": {
-              "NUM": "0.3"
-            }
-          }
-        }
-      }
+    },
+    {
+      "kind": "block",
+      "type": "whileUntil"
+    },
+    {
+      "kind": "block",
+      "type": "genericWhile"
+    },
+    {
+      "kind": "block",
+      "type": "lightSensorBool"
+    },
+    {
+      "kind": "block",
+      "type": "distSensorBool"
     }
   ]
 }
+
 let workspace = Blockly.inject('blocklyDiv', {toolbox: toolbox});
 let bloco = document.getElementById("blocklyDiv")
 console.log(bloco)
