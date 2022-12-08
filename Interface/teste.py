@@ -8,16 +8,16 @@ app = Flask(__name__)
 def homepage():
     if request.method == 'POST':
         script_to_be_run = """
-        # from models.car import Car
-        # car = Car()
+        from models.car import Car
+        car = Car()
 
         """
         script_to_be_run = textwrap.dedent(script_to_be_run)
-        script_to_be_run = "\t\t\t" + request.get_data(as_text=True)
+        script_to_be_run += request.get_data(as_text=True)
         
-
-        #teste simulador
-        filho_process = Popen(["python", ".\motor-simulation\\filho-simulador.py", script_to_be_run])
+        print(script_to_be_run)
+        filho_process = Popen(["python", "filho.py", script_to_be_run])
+        #filho_process = Popen(["python", ".\motor-simulation\\filho-simulador.py", script_to_be_run])
         
     return render_template("index.html")
 
