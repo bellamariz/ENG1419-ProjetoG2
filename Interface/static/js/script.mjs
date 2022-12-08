@@ -30,10 +30,6 @@ var toolbox = {
     },
     {
       "kind": "block",
-      "type": "whileUntil"
-    },
-    {
-      "kind": "block",
       "type": "genericWhile"
     },
     {
