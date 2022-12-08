@@ -4,11 +4,11 @@ from datetime import datetime, timedelta
 
 global gapCounterLeft, gapCounterRight, inputDirection, inputAngle, inputSpeed, inputDistance
 global finished, timeNowLeft, timeInitLeft, timeNowRight, timeInitRight
-gapCounterLeft = 0       # total de gaps lidos (entre 0 e 20)
-gapCounterRight = 0       # total de gaps lidos (entre 0 e 20)
-inputAngle = 0.0          # entre -180 (esq) e 180 (dir) graus
-inputSpeed = 0.0      # entre 0 e 1
-inputDirection = ""          # frente ou tras
+gapCounterLeft = 0       
+gapCounterRight = 0      
+inputAngle = 0.0         
+inputSpeed = 0.0         
+inputDirection = ""      
 inputDistance = 0.0
 finished = False
 timeInitLeft = None
@@ -68,7 +68,8 @@ GPIO.add_event_detect(pins.ENCODER2_SIGNAL_PIN, GPIO.RISING, encoder2_handler)
 
 while True:
   if not finished:
-    finished = car.turn()
+    finished = car.turn(gapCounterLeft, gapCounterRight)
+    # finished = car.move(gapCounterLeft)
   else:
     print("Terminou!")
     break

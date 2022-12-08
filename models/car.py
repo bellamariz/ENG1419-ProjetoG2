@@ -4,7 +4,7 @@ from .motor import *
 # Car: class for defining Car attributes
 class Car:
 
-  def __init__(self, speed = 0.3, angle = 0.0, direction = "F"):
+  def __init__(self, speed, angle, direction):
     self.speed = speed          # float in interval: (0,1]
     self.angle = angle          # float in interval: [-360, 360] (negative: left, positive: right)
     self.direction = direction  # F - forward, B - backward, N - neither
@@ -45,7 +45,7 @@ class Car:
       finished = self.motorControl.moveBackward(self.distance, gapCounterLeft)
     else:
       self.motorControl.stop()
-      return
+      return True
     
     return finished
 
@@ -57,7 +57,7 @@ class Car:
       finished = self.motorControl.turnRight(self.angle, gapCounterRight)
     else:
       self.motorControl.stop()
-      return
+      return True
 
     return finished
 
