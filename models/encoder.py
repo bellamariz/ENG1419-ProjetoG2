@@ -10,6 +10,7 @@ WHEEL_RADIUS = 3.2
 WHEEL_CIRCUMF = 2*math.pi*WHEEL_RADIUS
 # Radius between car's midpoint and the wheel
 CAR_RADIUS = 6.5
+
 class Encoder:
 
   def __ini__(self):
