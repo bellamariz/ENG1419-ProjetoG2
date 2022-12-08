@@ -157,8 +157,10 @@ export function setupComands() {
               .appendField("O carrinho deve");
           this.setInputsInline(false);
           this.setColour(230);
-       this.setTooltip("");
-       this.setHelpUrl("");
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+        this.setTooltip("");
+        this.setHelpUrl("");
         }
       };
 
