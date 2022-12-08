@@ -16,7 +16,7 @@ def homepage():
         script_to_be_run += request.get_data(as_text=True)
         
         print(script_to_be_run)
-        filho_process = Popen(["python", ".\Interface\\filho.py", script_to_be_run])
+        filho_process = Popen(["python", "filho.py", script_to_be_run])
         #filho_process = Popen(["python", ".\motor-simulation\\filho-simulador.py", script_to_be_run])
         
     return render_template("index.html")
