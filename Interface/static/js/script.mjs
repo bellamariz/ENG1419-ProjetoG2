@@ -1,4 +1,4 @@
-import { setupComands } from "./comandos.js";
+import { setupComands } from "./comandos.mjs";
 console.log("Funcionando");
 
 console.log("antes")
