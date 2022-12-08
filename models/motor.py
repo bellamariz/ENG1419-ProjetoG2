@@ -53,7 +53,6 @@ class CarMotor:
     self.motor.backward(self.speed)
 
   def motorStop(self):
-    # TODO: criar função para parar gradualmente
     self.motor.stop()
 
 
@@ -75,25 +74,75 @@ class MotorControl:
   
 
   # Motor functions
-  def moveForward(self, inputSpeed = 0.5):
-    # TODO: calibrar velocidade inputSpeed
-    self.motorLeft.motorForward(self.speed)
-    self.motorRight.motorForward(self.speed)
+  def moveForward(self, inputDistance, gapCounterLeft):
+    carDistance = self.motorLeft.enconder.getWheelArcLength(gapCounterLeft)
+    factor = 0.5
 
-  def moveBackward(self, inputSpeed = 0.5):
-    # TODO: calibrar velocidade inputSpeed
-    self.motorLeft.motorBackward(self.speed)
-    self.motorRight.motorBackward(self.speed)
+    print("Gaps: %d - Dist: %.3f"%(gapCounterLeft, carDistance/factor))
 
-  def turnLeft(self, inputAngle = 45, inputSpeed = 0.5):
-    # TODO: calibrar velocidade inputSpeed + angulo inputAngle
-    self.motorLeft.motorBackward(self.speed)
-    self.motorRight.motorForward(self.speed)
+    if carDistance < inputDistance*factor:
+      self.motorLeft.motorForward(self.speed)
+      self.motorRight.motorForward(self.speed)
+    else:
+      print("Terminou de andar! - Dist Atual: %.3f"%(carDistance/factor))
+      self.stop()
 
-  def turnRight(self, inputAngle = 45, inputSpeed = 0.5):
-    # TODO: calibrar velocidade inputSpeed + angulo inputAngle
-    self.motorLeft.motorForward(self.speed)
-    self.motorRight.motorBackward(self.speed)
+      return True
+    
+    return False
+
+  def moveBackward(self, inputDistance, gapCounterLeft):
+    carDistance = self.motorLeft.enconder.getWheelArcLength(gapCounterLeft)
+    factor = 0.5
+
+    print("Gaps: %d - Dist: %.3f"%(gapCounterLeft, carDistance/factor))
+
+    if carDistance < inputDistance*factor:
+      self.motorLeft.motorBackward(self.speed)
+      self.motorRight.motorBackward(self.speed)
+    else:
+      print("Terminou de andar! - Dist Atual: %.3f"%(carDistance/factor))
+      self.stop()
+
+      return True
+    
+    return False
+
+
+  def turnLeft(self, inputAngle, gapCounterLeft):
+    carAngle = self.motorLeft.enconder.getCarArcAngle(gapCounterLeft)
+    factor = 10
+
+    print("Gaps: %d - Angulo: %.3f"%(gapCounterLeft, carAngle))
+
+    if carAngle < abs(inputAngle)-factor:
+      self.motorLeft.motorBackward(self.speed)
+      self.motorRight.motorForward(self.speed)
+    else:
+      print("Terminou de girar! - Angulo Atual: %.3f"%(carAngle))
+      self.stop()
+
+      return True
+    
+    return False
+
+  def turnRight(self, inputAngle, gapCounterRight):
+    carAngle = self.motorLeft.enconder.getCarArcAngle(gapCounterRight)
+    factor = 10
+
+    print("Gaps: %d - Angulo: %.3f"%(gapCounterRight, carAngle))
+
+    if carAngle < abs(inputAngle)-factor:
+      self.motorLeft.motorForward(self.speed)
+      self.motorRight.motorBackward(self.speed)
+    else:
+      print("Terminou de girar! - Angulo Atual: %.3f"%(carAngle))
+      self.stop()
+
+      return True
+    
+    return False
+
 
   # Stop motors
   def stop(self):
