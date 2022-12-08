@@ -9,16 +9,7 @@ WHEEL_RADIUS = 3.2
 # Wheel circumference (in cm)
 WHEEL_CIRCUMF = 2*math.pi*WHEEL_RADIUS
 # Radius between car's midpoint and the wheel
-CAR_RADIUS = 7.9
-
-# Initialize GPIO pins
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
-# Encoder signal pin setup
-GPIO.setup(pins.ENCONDER_SIGNAL_PIN, GPIO.IN)
-# GPIO.add_event_detect(26, GPIO.RISING, encoder_handler)
-
+CAR_RADIUS = 6.5
 class Encoder:
 
   def __ini__(self):
