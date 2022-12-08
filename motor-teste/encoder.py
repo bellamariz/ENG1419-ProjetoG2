@@ -10,7 +10,7 @@ RAIO_RODA = 3.2
 CIRCUMF_RODA = 2*math.pi*RAIO_RODA
 
 # Raio entre metade do carrinho e a roda (em cm)
-RAIO_CARRINHO = 7.9
+RAIO_CARRINHO = 6.5 # antigo: 7.9
 
 # Pinagem de leitura do encoder (VCC,GND,SIG)
 # Enconder signal GPIO pin
@@ -34,5 +34,3 @@ def calculaArcoDoCarrinho(gaps):
 
 def calculaAnguloDoCarrinho(gaps):
     return (calculaArcoDoCarrinho(gaps)/RAIO_CARRINHO)*(180/math.pi)
-
-

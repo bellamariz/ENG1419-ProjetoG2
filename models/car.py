@@ -76,6 +76,10 @@ if __name__ == "__main__":
   GPIO.setmode(GPIO.BCM)
   GPIO.setwarnings(False)
 
+  # Encoder signal pin setup
+  GPIO.setup(pins.ENCODER1_SIGNAL_PIN,GPIO.IN)
+  GPIO.setup(pins.ENCODER2_SIGNAL_PIN,GPIO.IN)
+
   # Reads user input
   speed = float(input("Velocidade no intervalo (0, 100]: "))/100
   angle = float(input("Angulo que deseja girar no intervalo [-360, 360]: "))
