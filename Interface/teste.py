@@ -7,22 +7,27 @@ app = Flask(__name__)
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
     if request.method == 'POST':
-        script_to_be_run = """
-        from models.car import Car
-        car = Car()
+        main_file =  "models\\main.py"
+        output_file = "models\\generatedCode.py"
 
-        """
-        script_to_be_run = textwrap.dedent(script_to_be_run)
-        script_to_be_run += request.get_data(as_text=True)
-        script_to_be_run += "\nexit()"
+        with open(main_file,"r") as original_code:
+            script_to_be_run = original_code.read()
+
+            code_generated_by_blockly = request.get_data(as_text=True)
+            command_list = code_generated_by_blockly.splitlines()
+
+            for index in range(len(command_list)):
+                command_list[index] = "    "  + command_list[index] + "\n"
+            
+            code_generated_by_blockly = ''.join(command_list)
         
-        print(script_to_be_run)
+            script_to_be_run = script_to_be_run.replace("    # finished = car.move(gapCounterLeft)", code_generated_by_blockly)
 
-        outputFile = "generatedCode.py"
+            script_to_be_run += "\nexit()"
 
-        with open(outputFile, "w") as file:
+            with open(output_file, "w") as file:
             file.write(script_to_be_run)
-        filho_process = Popen(["python", outputFile, script_to_be_run])
+                filho_process = Popen(["python", output_file, script_to_be_run])
         
     return render_template("index.html")
 
