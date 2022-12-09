@@ -176,9 +176,9 @@ export function setupComands() {
     Blockly.Blocks.lightSensorBool = {
         init: function() {
             this.appendDummyInput()
-                .appendField("Sensor")
-                .appendField(new Blockly.FieldDropdown([["está", "True"], ["não está", "False"]]), "MODE")
-                .appendField("captando luz");
+                .appendField("O sensor")
+                .appendField(new Blockly.FieldDropdown([["captar", "True"], ["não captar", "False"]]), "MODE")
+                .appendField("luz");
             this.setOutput(true, null);
             this.setInputsInline(false);
             this.setColour(130);
@@ -196,9 +196,9 @@ export function setupComands() {
     Blockly.Blocks.distSensorBool = {
         init: function() {
             this.appendDummyInput()
-                .appendField("Sensor de distancia")
-                .appendField(new Blockly.FieldDropdown([["está", "True"], ["não está", "False"]]), "MODE")
-                .appendField("captando algum obstaculo");
+                .appendField("O sensor")
+                .appendField(new Blockly.FieldDropdown([["captar", "True"], ["não captar", "False"]]), "MODE")
+                .appendField("um obstaculo");
             this.setOutput(true, null);
             this.setInputsInline(false);
             this.setColour(130);
