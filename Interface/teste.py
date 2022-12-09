@@ -26,7 +26,7 @@ def homepage():
             script_to_be_run += "\nexit()"
 
             with open(output_file, "w") as file:
-            file.write(script_to_be_run)
+                file.write(script_to_be_run)
                 filho_process = Popen(["python", output_file, script_to_be_run])
         
     return render_template("index.html")
