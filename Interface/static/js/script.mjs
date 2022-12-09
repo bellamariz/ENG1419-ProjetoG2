@@ -57,7 +57,7 @@ workspace.addChangeListener(updateCode);
 function buttonCodeSubmitClickHandler(){
   let pythonCode = document.getElementById('blocklyDiv').value;
   
-  fetch("http://127.0.0.1:5000", {
+  fetch("/", {
     method: 'post',
     body: pythonCode,
     headers: {
