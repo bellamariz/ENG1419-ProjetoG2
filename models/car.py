@@ -4,7 +4,7 @@ from .motor import *
 # Car: class for defining Car attributes
 class Car:
 
-  def __init__(self, speed = 0.3, angle = 0.0, direction = "F"):
+  def __init__(self, speed, angle, direction):
     self.speed = speed          # float in interval: (0,1]
     self.angle = angle          # float in interval: [-360, 360] (negative: left, positive: right)
     self.direction = direction  # F - forward, B - backward, N - neither
@@ -38,22 +38,28 @@ class Car:
 
   # Car functions
   # Moves car forwards or backwards based on user input
-  def move(self):
+  def move(self, gapCounterLeft):
     if self.direction == "F":
-      self.motorControl.moveForward(self.speed)
+      finished = self.motorControl.moveForward(self.distance, gapCounterLeft)
     elif self.direction == "B":
-      self.motorControl.moveBackward(self.speed)
+      finished = self.motorControl.moveBackward(self.distance, gapCounterLeft)
     else:
       self.motorControl.stop()
+      return True
+    
+    return finished
 
   # Turns car to left for negative angles and to right for positive angles
-  def turn(self):
+  def turn(self, gapCounterLeft, gapCounterRight):
     if self.angulo < 0:
-      self.motorControl.turnLeft(self.angle, self.speed)
+      finished = self.motorControl.turnLeft(self.angle, gapCounterLeft)
     elif self.angulo > 0:
-      self.motorControl.turnRight(self.angle, self.speed)
+      finished = self.motorControl.turnRight(self.angle, gapCounterRight)
     else:
-      self.move()
+      self.motorControl.stop()
+      return True
+
+    return finished
 
   # Switch car operation mode
   def switchMode(self):
@@ -69,26 +75,6 @@ class Car:
   def stop(self):
     self.motorControl.stop()
     self.motorControl.resetMotors()
-    
-
-if __name__ == "__main__":
-  # Initialize GPIO pins
-  GPIO.setmode(GPIO.BCM)
-  GPIO.setwarnings(False)
-
-  # Encoder signal pin setup
-  GPIO.setup(pins.ENCODER1_SIGNAL_PIN,GPIO.IN)
-  GPIO.setup(pins.ENCODER2_SIGNAL_PIN,GPIO.IN)
-
-  # Reads user input
-  speed = float(input("Velocidade no intervalo (0, 100]: "))/100
-  angle = float(input("Angulo que deseja girar no intervalo [-360, 360]: "))
-  direction = input("Direcao que deseja andar, frente -> F, tras -> T: ")
-
-  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(direction, angle, speed*100))
-
-  # Initialize car
-  car = Car(speed, angle, direction)
 
 
 
