@@ -38,6 +38,10 @@ var toolbox = {
     },
     {
       "kind": "block",
+      "type": "genericElse"
+    },
+    {
+      "kind": "block",
       "type": "lightSensorBool"
     },
     {

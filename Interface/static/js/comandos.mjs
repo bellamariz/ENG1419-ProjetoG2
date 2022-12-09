@@ -199,6 +199,30 @@ export function setupComands() {
         return 'if (' + conditional + '):\n' + branch;
     };
 
+    Blockly.Blocks.genericElse = {
+        init: function() {
+          this.appendDummyInput()
+              .appendField("Senão");
+          this.appendStatementInput("DO")
+              .setCheck(null)
+              .appendField("O carrinho deve");
+          this.setInputsInline(false);
+          this.setColour(230);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+        this.setTooltip("");
+        this.setHelpUrl("");
+        }
+      };
+
+    //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
+    Blockly.Python.genericElse = function (block) {
+
+        let branch = Blockly.Python.statementToCode(block, 'DO');
+        branch = Blockly.Python.addLoopTrap(branch, block) || Blockly.Python.PASS;
+        return 'else:\n' + branch;
+    };
+
     Blockly.Blocks.lightSensorBool = {
         init: function() {
             this.appendDummyInput()
