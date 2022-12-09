@@ -133,7 +133,7 @@ export function setupComands() {
             this.setColour(290);
             this.appendDummyInput()
             .appendField("Define velocidade para")
-            .appendField(new Blockly.FieldNumber(0.3, 0, 1, 0.1), "Speed")
+            .appendField(new Blockly.FieldNumber(0.3, 0.1, 1, 0.1), "Speed")
             .appendField("teemos/ticks");
             this.setPreviousStatement(true);
             this.setNextStatement(true);
