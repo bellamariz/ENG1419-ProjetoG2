@@ -74,5 +74,4 @@ while True:
   print("Finished: ", finished)
   if finished:
     print("Terminou!")
-    car.stop()
     break
