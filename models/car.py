@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from .motor import *
+from motor import *
 
 # Car: class for defining Car attributes
 class Car:
@@ -39,6 +39,7 @@ class Car:
   # Car functions
   # Moves car forwards or backwards based on user input
   def move(self, gapCounterLeft):
+    finished = False
     if self.direction == "F":
       finished = self.motorControl.moveForward(self.distance, gapCounterLeft)
     elif self.direction == "B":
@@ -51,9 +52,10 @@ class Car:
 
   # Turns car to left for negative angles and to right for positive angles
   def turn(self, gapCounterLeft, gapCounterRight):
-    if self.angulo < 0:
+    finished = False
+    if self.angle < 0:
       finished = self.motorControl.turnLeft(self.angle, gapCounterLeft)
-    elif self.angulo > 0:
+    elif self.angle > 0:
       finished = self.motorControl.turnRight(self.angle, gapCounterRight)
     else:
       self.motorControl.stop()
@@ -74,7 +76,6 @@ class Car:
   # Stop car
   def stop(self):
     self.motorControl.stop()
-    self.motorControl.resetMotors()
 
 
 

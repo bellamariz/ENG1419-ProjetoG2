@@ -14,23 +14,7 @@ CAR_RADIUS = 6.5
 class Encoder:
 
   def __ini__(self):
-    self.gapsCounter = 0
-
-  # Getter and Setter
-  def getGapsCounter(self):
-    return self.gapsCounter
-
-  def setGapsCounter(self, value):
-    if value < 0:
-      self.gapsCounter = 0
-    else:
-      self.gapsCounter = value
-
-  # Increments counter for encoder gaps read
-  def incGapsCounter(self):
-    self.gapsCounter += 1
-    print("Gaps: %d"%(self.gapsCounter))
-
+    print("Init encoder")
 
   # Calculations for the arc length travelled by the car
   # Calcula o comprimento de arco percorrido pela roda (dado o num de gaps do encoder detectados)
