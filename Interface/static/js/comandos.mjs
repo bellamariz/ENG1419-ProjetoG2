@@ -173,6 +173,32 @@ export function setupComands() {
         return 'while (' + conditional + '):\n' + branch;
     };
 
+    Blockly.Blocks.genericIf = {
+        init: function() {
+          this.appendValueInput("CONDITIONAL")
+              .setCheck("Boolean")
+              .appendField("Se");
+          this.appendStatementInput("DO")
+              .setCheck(null)
+              .appendField("O carrinho deve");
+          this.setInputsInline(false);
+          this.setColour(230);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+        this.setTooltip("");
+        this.setHelpUrl("");
+        }
+      };
+
+    //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
+    Blockly.Python.genericIf = function (block) {
+
+        let conditional = Blockly.Python.statementToCode(block, 'CONDITIONAL')|| 'False';
+        let branch = Blockly.Python.statementToCode(block, 'DO');
+        branch = Blockly.Python.addLoopTrap(branch, block) || Blockly.Python.PASS;
+        return 'if (' + conditional + '):\n' + branch;
+    };
+
     Blockly.Blocks.lightSensorBool = {
         init: function() {
             this.appendDummyInput()

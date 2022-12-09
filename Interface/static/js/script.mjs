@@ -34,6 +34,10 @@ var toolbox = {
     },
     {
       "kind": "block",
+      "type": "genericIf"
+    },
+    {
+      "kind": "block",
       "type": "lightSensorBool"
     },
     {
