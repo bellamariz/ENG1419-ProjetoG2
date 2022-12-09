@@ -5,8 +5,8 @@ export function setupComands() {
             this.setColour(290);
             this.appendDummyInput()
             .appendField("Andar em frente por")
-            .appendField(new Blockly.FieldNumber(1, 0, 10000, 0.01), "Distance")
-            .appendField("Metros");
+            .appendField(new Blockly.FieldNumber(1, 1, 1000, 1), "Distance")
+            .appendField("cm");
             this.setPreviousStatement(true);
             this.setNextStatement(true);
             this.setInputsInline(true);
