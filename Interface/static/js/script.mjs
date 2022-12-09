@@ -47,6 +47,10 @@ var toolbox = {
     {
       "kind": "block",
       "type": "distSensorBool"
+    },
+    {
+      "kind": "block",
+      "type": "andOrBlock"
     }
   ]
 }

@@ -262,5 +262,30 @@ export function setupComands() {
         let argument0 = "car.dist_sensor == " + block.getFieldValue('MODE');
         return argument0;
     };
+
+    Blockly.Blocks.andOrBlock = {
+        init: function() {
+            this.appendValueInput("CONDITIONAL1")
+                .setCheck("Boolean");
+            this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([["e", "and"], ["ou", "or"]]), "MODE");
+            this.appendValueInput("CONDITIONAL2")
+                .setCheck("Boolean");
+            this.setOutput(true, null);
+            this.setInputsInline(true);
+            this.setColour(290);
+            this.setTooltip("");
+            this.setHelpUrl("");
+        }
+      };
+
+    //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
+    Blockly.Python.andOrBlock = function (block) {
+        
+        let conditional1 = Blockly.Python.statementToCode(block, 'CONDITIONAL1')|| ' False';
+        let conditional2 = Blockly.Python.statementToCode(block, 'CONDITIONAL2')|| ' False';
+        let operator = block.getFieldValue('MODE');
+        return conditional1 + " " + operator + conditional2;
+    };
     
 }
