@@ -34,6 +34,10 @@ var toolbox = {
     },
     {
       "kind": "block",
+      "type": "genericFor"
+    },
+    {
+      "kind": "block",
       "type": "genericIf"
     },
     {

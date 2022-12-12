@@ -173,6 +173,37 @@ export function setupComands() {
         return 'while (' + conditional + '):\n' + branch;
     };
 
+    
+
+    Blockly.Blocks.genericFor = {
+        init: function() {
+            this.appendDummyInput()
+                .appendField("Repetir")
+                .appendField(new Blockly.FieldNumber(1, 0, 100, 1), "Iteration")
+                .appendField("vezes :");
+            this.appendStatementInput("DO")
+                .setCheck(null);
+            this.setInputsInline(false);
+            this.setColour(230);
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setTooltip("");
+            this.setHelpUrl("");
+        }
+      };
+
+
+    Blockly.Python.genericFor = function (block) {
+        let i = block.getFieldValue('Iteration')|| '0';
+        let branch = Blockly.Python.statementToCode(block, 'DO');
+        branch = Blockly.Python.addLoopTrap(branch, block) || Blockly.Python.PASS;
+        return `for _ in range(${i}):\n${branch}`;
+    };
+
+
+
+
+
     Blockly.Blocks.genericIf = {
         init: function() {
           this.appendValueInput("CONDITIONAL")
