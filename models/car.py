@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 from motor import *
+from gpiozero import DistanceSensor
+import pins
 
 # Car: class for defining Car attributes
 class Car:
@@ -10,6 +12,7 @@ class Car:
     self.direction = direction  # F - forward, B - backward, N - neither
     self.distance = distance    # in cm
     self.modeAuto = True        # True - auto, False - manual
+    self.distanceSensor = DistanceSensor(echo=pins.DISTANCE_ECHO, trigger=pins.DISTANCE_TRIGGER)
     self.motorControl = MotorControl(speed, angle, direction, distance)
 
   # Getters and Setters
@@ -84,9 +87,18 @@ class Car:
     else:
       print("Modo manual")
 
+
+  # Distance sensor function
+  def checkDistSensor(threshold):
+    self.distanceSensor.threshold_distance = threshold
+    return self.distanceSensor.distance <= threshold
+
+
   # Stop car
   def stop(self):
     self.motorControl.stop()
 
+
+  
 
 

@@ -46,10 +46,6 @@ var toolbox = {
     },
     {
       "kind": "block",
-      "type": "lightSensorBool"
-    },
-    {
-      "kind": "block",
       "type": "distSensorBool"
     },
     {

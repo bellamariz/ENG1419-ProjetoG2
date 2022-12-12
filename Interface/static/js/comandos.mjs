@@ -133,8 +133,8 @@ export function setupComands() {
             this.setColour(290);
             this.appendDummyInput()
             .appendField("Define velocidade para")
-            .appendField(new Blockly.FieldNumber(0.3, 0.1, 1, 0.1), "Speed")
-            .appendField("teemos/ticks");
+            .appendField(new Blockly.FieldNumber(30, 1, 100, 1), "Speed")
+            .appendField("%");
             this.setPreviousStatement(true);
             this.setNextStatement(true);
             this.setInputsInline(true);
@@ -144,7 +144,7 @@ export function setupComands() {
     //Gera o codigo python de andar pra frente (forward/fwd) por uma distancia definido pelo usuario
     Blockly.Python.setSpeed = function (block) {
         const speed = block.getFieldValue('Speed') || '\'\'';
-        return `car.setSpeed(${speed})\n`;
+        return `car.setSpeed(${speed/100})\n`;
     };
 
     Blockly.Blocks.genericWhile = {
@@ -199,9 +199,6 @@ export function setupComands() {
         branch = Blockly.Python.addLoopTrap(branch, block) || Blockly.Python.PASS;
         return `for _ in range(${i}):\n${branch}`;
     };
-
-
-
 
 
     Blockly.Blocks.genericIf = {
@@ -293,7 +290,7 @@ export function setupComands() {
     //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
     Blockly.Python.distSensorBool = function (block) {
         const dist = block.getFieldValue('Distance') || '\'\'';
-        return `car.dist_sensor(${dist}) ==  ${block.getFieldValue('MODE')}`;
+        return `car.checkDistSensor(${dist}) ==  ${block.getFieldValue('MODE')}`;
     };
 
     Blockly.Blocks.andOrBlock = {
