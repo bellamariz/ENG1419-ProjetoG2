@@ -4,31 +4,42 @@ from motor import *
 # Car: class for defining Car attributes
 class Car:
 
-  def __init__(self, speed, angle, direction):
+  def __init__(self, speed, angle, direction, distance):
     self.speed = speed          # float in interval: (0,1]
     self.angle = angle          # float in interval: [-360, 360] (negative: left, positive: right)
     self.direction = direction  # F - forward, B - backward, N - neither
+    self.distance = distance    # in cm
     self.modeAuto = True        # True - auto, False - manual
-    self.motorControl = MotorControl(speed, angle, direction)
+    self.motorControl = MotorControl(speed, angle, direction, distance)
 
   # Getters and Setters
   def setSpeed(self, speed):
     self.speed = speed
+    self.motorControl.setSpeed(speed)
 
   def getSpeed(self):
     return self.speed
 
   def setAngle(self, angle):
     self.angle = angle
+    self.motorControl.setAngle(angle)
 
   def getAngle(self):
     return self.angle
 
   def setDirection(self, direction):
     self.direction = direction
+    self.motorControl.setDirection(direction)
 
   def getDirection(self):
     return self.direction
+
+  def setDistance(self, distance):
+    self.distance = distance
+    self.motorControl.setDistance(distance)
+    
+  def getDistance(self):
+    return self.distance
 
   def setModeAuto(self, modeAuto):
     self.modeAuto = modeAuto
@@ -38,12 +49,12 @@ class Car:
 
   # Car functions
   # Moves car forwards or backwards based on user input
-  def move(self, gapCounterLeft):
+  def move(self, gapCounterLeft, gapCounterRight):
     finished = False
     if self.direction == "F":
-      finished = self.motorControl.moveForward(self.distance, gapCounterLeft)
+      finished = self.motorControl.moveForward(gapCounterLeft)
     elif self.direction == "B":
-      finished = self.motorControl.moveBackward(self.distance, gapCounterLeft)
+      finished = self.motorControl.moveBackward(gapCounterLeft)
     else:
       self.motorControl.stop()
       return True
@@ -54,9 +65,9 @@ class Car:
   def turn(self, gapCounterLeft, gapCounterRight):
     finished = False
     if self.angle < 0:
-      finished = self.motorControl.turnLeft(self.angle, gapCounterLeft)
+      finished = self.motorControl.turnLeft(gapCounterLeft)
     elif self.angle > 0:
-      finished = self.motorControl.turnRight(self.angle, gapCounterRight)
+      finished = self.motorControl.turnRight(gapCounterLeft)
     else:
       self.motorControl.stop()
       return True

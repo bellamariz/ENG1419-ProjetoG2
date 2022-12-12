@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 
 global gapCounterLeft, gapCounterRight, inputDirection, inputAngle, inputSpeed, inputDistance
 global finished, timeNowLeft, timeInitLeft, timeNowRight, timeInitRight
+global counterTeste
+counterTeste = 0
 gapCounterLeft = 0       
 gapCounterRight = 0      
 inputAngle = 0.0         
@@ -29,16 +31,16 @@ GPIO.setup(pins.ENCODER2_SIGNAL_PIN,GPIO.IN)
 def initialize():
   global inputDirection, inputAngle, inputSpeed, inputDistance, timeInitLeft, timeInitRight
 
-  inputDirection = input("Para qual direcao deseja andar, 'FRENTE', 'TRAS' ou 'NENHUMA'?\n")
+  inputDirection = input("Para qual direcao deseja andar, 'F', 'T' ou 'NENHUMA'?\n")
   
-  if inputDirection == 'FRENTE' or inputDirection == 'TRAS':
+  if inputDirection == 'F' or inputDirection == 'T':
     inputDistance = float(input("Quanto de distancia deseja andar? (em m)\n"))*100
   else:
     inputDistance = 0.0
   inputAngle = float(input("Para qual angulo deseja girar (em graus)?\n"))
   inputSpeed = float(input("Com quanto de velocidade, entre 0 e 100 porcento?\n"))/100
 
-  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n"%(inputDirection, inputAngle, inputSpeed*100)) 
+  print("Direcao: %s\n Angulo %.2f graus\n Velocidade: %.2f\n Distancia: %.2f m\n"%(inputDirection, inputAngle, inputSpeed*100, inputDistance/100)) 
   timeInitLeft = datetime.now()
   timeInitRight = datetime.now()
 
@@ -61,16 +63,24 @@ def encoder2_handler(pin):
     gapCounterRight+=1
     timeInitRight = timeNowRight
 
+def print_parameters(obj):
+    speed = obj.getSpeed()
+    angle = obj.getAngle()
+    direction = obj.getDirection()
+    distance = obj.getDistance()
+    
+    print("speed = %.3f, angle = %.3f, dir = %s, dist = %.3f"%(speed, angle, direction, distance))
 
 # Initialize
 initialize()
-car = Car(inputSpeed, inputAngle, inputDirection)
+car = Car(inputSpeed, inputAngle, inputDirection, inputDistance)
 
 GPIO.add_event_detect(pins.ENCODER1_SIGNAL_PIN, GPIO.RISING, encoder1_handler)
 GPIO.add_event_detect(pins.ENCODER2_SIGNAL_PIN, GPIO.RISING, encoder2_handler)
 
 while True:
   finished = car.turn(gapCounterLeft, gapCounterRight)
+  #finished = car.move(gapCounterLeft, gapCounterRight)
   print("Finished: ", finished)
   if finished:
     print("Terminou!")
