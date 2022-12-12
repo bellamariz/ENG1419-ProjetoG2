@@ -248,7 +248,9 @@ export function setupComands() {
             this.appendDummyInput()
                 .appendField("O sensor")
                 .appendField(new Blockly.FieldDropdown([["captar", "True"], ["não captar", "False"]]), "MODE")
-                .appendField("um obstaculo");
+                .appendField("um obstaculo a")
+                .appendField(new Blockly.FieldNumber(10, 0, 100, 1), "Distance")
+                .appendField("cm de distância");
             this.setOutput(true, null);
             this.setInputsInline(false);
             this.setColour(130);
@@ -259,8 +261,8 @@ export function setupComands() {
 
     //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
     Blockly.Python.distSensorBool = function (block) {
-        let argument0 = "car.dist_sensor == " + block.getFieldValue('MODE');
-        return argument0;
+        const dist = block.getFieldValue('Distance') || '\'\'';
+        return `car.dist_sensor(${dist}) ==  ${block.getFieldValue('MODE')}`;
     };
 
     Blockly.Blocks.andOrBlock = {
