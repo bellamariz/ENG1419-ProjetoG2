@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 from car import *
 import pins
 from datetime import datetime, timedelta
+from gpiozero import DistanceSensor
 
 global gapCounterLeft, gapCounterRight, inputDirection, inputAngle, inputSpeed, inputDistance
 global finished, timeNowLeft, timeInitLeft, timeNowRight, timeInitRight
@@ -77,6 +78,9 @@ car = Car(inputSpeed, inputAngle, inputDirection, inputDistance)
 
 GPIO.add_event_detect(pins.ENCODER1_SIGNAL_PIN, GPIO.RISING, encoder1_handler)
 GPIO.add_event_detect(pins.ENCODER2_SIGNAL_PIN, GPIO.RISING, encoder2_handler)
+
+distanceSensor = DistanceSensor(echo=pins.DISTANCE_ECHO, trigger=pins.DISTANCE_TRIGGER)
+distanceSensor.threshold_distance = 0.2 # 20cm or 0.2m
 
 while True:
   finished = car.turn(gapCounterLeft, gapCounterRight)
