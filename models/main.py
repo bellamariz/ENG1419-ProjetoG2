@@ -68,12 +68,12 @@ def encoder2_handler(pin):
     timeInitRight = timeNowRight
 
 def print_parameters(obj):
-    speed = obj.getSpeed()
-    angle = obj.getAngle()
-    direction = obj.getDirection()
-    distance = obj.getDistance()
+  speed = obj.getSpeed()
+  angle = obj.getAngle()
+  direction = obj.getDirection()
+  distance = obj.getDistance()
     
-    print("speed = %.3f, angle = %.3f, dir = %s, dist = %.3f"%(speed, angle, direction, distance))
+  print("speed = %.3f, angle = %.3f, dir = %s, dist = %.3f"%(speed, angle, direction, distance))
 
 # Initialize
 initialize()
@@ -86,17 +86,16 @@ car.distanceSensor.max_distance = 1
 car.distanceSensor.threshold_distance = 0.2 # 20cm or 0.2m
 
 def execute(function):
-    global gapCounterLeft, gapCounterRight
-    while not finished:
-        finished = function(gapCounterLeft, gapCounterRight)
-    gapCounterLeft = 0
-    gapCounterRight = 0
+  global gapCounterLeft, gapCounterRight
+  finished = False
+  print(str(function))
+  while not finished:
+    finished = function(gapCounterLeft, gapCounterRight)
+    print(str(finished))
+  gapCounterLeft = 0
+  gapCounterRight = 0
 
 
 while True:
-  finished = car.turn(gapCounterLeft, gapCounterRight)
   #REPLACE
-  print("Finished: ", finished)
-  if finished:
-    print("Terminou!")
-    break
+  break

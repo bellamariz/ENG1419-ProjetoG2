@@ -38,10 +38,10 @@ function setupComands() {
     Blockly.Python.moveDirection = function (block) {
         const sentido = block.getFieldValue('SENTIDO');
         if (sentido == "Frente") {
-            return `car.setDirection("F")\nexecute(car.move)\n`;
+            return `car.setDirection("F")\ncar.setDistance(1)\nexecute(car.move)\n`;
         }
 
-        return `car.setDirection("T")\nexecute(car.move)\n`;
+        return `car.setDirection("T")\ncar.setDistance(1)\nexecute(car.move)\n`;
     };
 
 
@@ -290,7 +290,7 @@ function setupComands() {
     //Gera o codigo python de virar em alguma direcao em um angulo especificado pelo usuario
     Blockly.Python.distSensorBool = function (block) {
         const dist = block.getFieldValue('Distance') || '\'\'';
-        return `car.checkDistSensor(${dist}) ==  ${block.getFieldValue('MODE')}`;
+        return `car.checkDistSensor(${dist/100}) ==  ${block.getFieldValue('MODE')}`;
     };
 
     Blockly.Blocks.andOrBlock = {

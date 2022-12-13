@@ -106,7 +106,10 @@ class MotorControl:
   # Motor functions
   def moveForward(self, gapCounterLeft):
     carDistance = self.motorLeft.encoder.getWheelArcLength(gapCounterLeft)
-    factor = 0.5
+    if self.speed >= 0.5:
+        factor = 0.5
+    else:
+        factor = 0.8
 
     print("Gaps: %d - Dist: %.3f"%(gapCounterLeft, carDistance/factor))
 
@@ -123,7 +126,10 @@ class MotorControl:
 
   def moveBackward(self, gapCounterLeft):
     carDistance = self.motorLeft.encoder.getWheelArcLength(gapCounterLeft)
-    factor = 0.5
+    if self.speed >= 0.5:
+        factor = 0.5
+    else:
+        factor = 0.8
 
     print("Gaps: %d - Dist: %.3f"%(gapCounterLeft, carDistance/factor))
 

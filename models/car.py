@@ -89,7 +89,7 @@ class Car:
 
 
   # Distance sensor function
-  def checkDistSensor(threshold):
+  def checkDistSensor(self,threshold):
     self.distanceSensor.threshold_distance = threshold
     return self.distanceSensor.distance <= threshold
 

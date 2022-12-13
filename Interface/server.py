@@ -27,21 +27,21 @@ def velocidade(y):
 
 @app.route("/f/<int:z>")
 def mover_frente(z):
-    comando = "car.setDirection(" + "F" + ")\n"
+    comando = "car.setDirection(" + "'F'" + ")\n"
     comando += "car.setDistance("+ str(abs(z)) +")\n"
     comando += "execute(car.move)\n"
     codigo_base(comando)
     return comando
 
-@app.route("/t/<int:w>")
+@app.route("/b/<int:w>")
 def mover_tras(w):
-    comando = "car.setDirection("+"T"+")\n"
+    comando = "car.setDirection("+"'B'"+")\n"
     comando += "car.setDistance("+ str(abs(w)) +")\n"
     comando += "execute(car.move)\n"
     codigo_base(comando)
     return comando
 
-def codigo_base(code_generated_by_blockly)
+def codigo_base(code_generated_by_blockly):
     main_file =  "../models/main.py"
     output_file = "../models/generatedCode.py"
 
@@ -65,4 +65,3 @@ def codigo_base(code_generated_by_blockly)
             filho_process = Popen(["python3", output_file, ""])
             
 app.run(port=5005, debug=False)
-
