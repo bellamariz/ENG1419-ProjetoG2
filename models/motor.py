@@ -141,6 +141,7 @@ class MotorControl:
 
   def turnLeft(self, gapCounterLeft):
     carAngle = self.motorLeft.encoder.getCarArcAngle(gapCounterLeft)
+    print("car angle", carAngle,gapCounterLeft)
     
     if self.speed <= 0.3:
       factor = 10
@@ -162,13 +163,14 @@ class MotorControl:
 
   def turnRight(self, gapCounterLeft):
     carAngle = self.motorLeft.encoder.getCarArcAngle(gapCounterLeft)
+    print("car angle", carAngle)
     
     if self.speed <= 0.3:
       factor = 10
     else:
       factor = 10+(20*self.speed)
 
-    print("Gaps: %d - Angulo: %.3f"%(gapCounterRight, carAngle))
+    print("Gaps: %d - Angulo: %.3f"%(gapCounterLeft, carAngle))
 
     if carAngle < abs(self.angle)-factor:
       self.motorLeft.motorForward()

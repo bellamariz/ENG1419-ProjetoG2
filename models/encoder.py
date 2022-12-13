@@ -26,7 +26,7 @@ class Encoder:
     return (self.getWheelArcLength(gaps)/WHEEL_RADIUS)*(180/math.pi)
 
   # Calcula o comprimento de arco percorrido pelo carrinho girando 
-  # É o mesmo arco percorrido pelo movimento da roda
+  # Eh o mesmo arco percorrido pelo movimento da roda
   def getCarArcLength(self, gaps):
     return self.getWheelArcLength(gaps)
 

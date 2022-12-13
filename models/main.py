@@ -85,9 +85,17 @@ GPIO.add_event_detect(pins.ENCODER2_SIGNAL_PIN, GPIO.RISING, encoder2_handler)
 car.distanceSensor.max_distance = 1
 car.distanceSensor.threshold_distance = 0.2 # 20cm or 0.2m
 
+def execute(function):
+    global gapCounterLeft, gapCounterRight
+    while not finished:
+        finished = function(gapCounterLeft, gapCounterRight)
+    gapCounterLeft = 0
+    gapCounterRight = 0
+
+
 while True:
   finished = car.turn(gapCounterLeft, gapCounterRight)
-  #finished = car.move(gapCounterLeft, gapCounterRight)
+  #REPLACE
   print("Finished: ", finished)
   if finished:
     print("Terminou!")
