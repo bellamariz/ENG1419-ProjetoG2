@@ -17,7 +17,7 @@ function setupComands() {
     Blockly.Python.fwdDistanceMeters = function (block) {
         const distance = block.getFieldValue('Distance') || '\'\'';
         //return `frente()\n`;
-        return `car.setDistance(${distance})\nfinished = car.move(gapCounterLeft, gapCounterRight)\n`;
+        return `car.setDistance(${distance})\nexecute(car.move)\n`;
     };
 
 
@@ -38,10 +38,10 @@ function setupComands() {
     Blockly.Python.moveDirection = function (block) {
         const sentido = block.getFieldValue('SENTIDO');
         if (sentido == "Frente") {
-            return `car.setDirection("F")\nfinished = car.move(gapCounterLeft, gapCounterRight)\n`;
+            return `car.setDirection("F")\nexecute(car.move)\n`;
         }
 
-        return `car.setDirection("T")\nfinished = car.move(gapCounterLeft, gapCounterRight)\n`;
+        return `car.setDirection("T")\nexecute(car.move)\n`;
     };
 
 
@@ -64,10 +64,10 @@ function setupComands() {
     Blockly.Python.turnLeftOrRight = function (block) {
         const direcao = block.getFieldValue('DIRECAO');
         if (direcao == "Esquerda") {
-            return `car.setAngle(-90)\nfinished = car.turn(gapCounterLeft, gapCounterRight)\n`;
+            return `car.setAngle(-90)\nexecute(car.turn)\n`;
         }
 
-        return `car.setAngle(90)\nfinished = car.turn(gapCounterLeft, gapCounterRight)\n`;
+        return `car.setAngle(90)\nexecute(car.turn)\n`;
     };
 
 
@@ -93,7 +93,7 @@ function setupComands() {
         if (graus >= 180) {
             graus = graus-360;
         }
-        return `car.setAngle(${graus})\nfinished = car.turn(gapCounterLeft, gapCounterRight)\n`;
+        return `car.setAngle(${graus})\nexecute(car.turn)\n`;
     };
 
 
