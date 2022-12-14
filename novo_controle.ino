@@ -24,6 +24,7 @@ GFButton botaoAvancar(A2,E_GFBUTTON_PULLDOWN);
 
 void setup() {
   Serial.begin(9600);
+  Serial1.begin(115200);
   int origem1 = digitalPinToInterrupt(20);
   int origem2 = digitalPinToInterrupt(21);
 
@@ -51,6 +52,15 @@ void loop() {
   botaoEnviar.process();
   botaoGirar.process();
   botaoAvancar.process();
+
+  if (Serial1.available() > 0) {
+     
+      String texto = Serial1.readStringUntil('\n');
+      texto.trim();
+      Serial.println(texto);
+  }
+
+  regulagem = posicao;
   
   if (cont%4 == 1){
     
@@ -60,7 +70,7 @@ void loop() {
       
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("Quantos graus?");
+      lcd.print("Qual angulo?");
       if (posicao > 90){
         encoder.setPosition(90);
         }
@@ -78,11 +88,11 @@ void loop() {
   else if (cont%4 == 2){
     
     
-    int posicao = encoder.getPosition();
+    posicao = encoder.getPosition();
     if (posicao != posicaoAnterior) {
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("Velocidade?");
+      lcd.print("Qual velocidade?");
       if (posicao > 100){
         encoder.setPosition(100);
         }
@@ -97,16 +107,16 @@ void loop() {
   else if (cont%4 == 3){
     
     
-    int posicao = encoder.getPosition();
+    posicao = encoder.getPosition();
     if (posicao != posicaoAnterior) {
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Mover quanto?");
-      if (posicao > 3){
-        encoder.setPosition(3);
+      if (posicao > 100){
+        encoder.setPosition(100);
         }
-       else if (posicao < 0){
-        encoder.setPosition(0);
+       else if (posicao < -100){
+        encoder.setPosition(-100);
         }
       lcd.setCursor(0,1);
       lcd.print(posicao);
@@ -123,35 +133,40 @@ void tickDoEncoder() {
 
 
 void enviar(){
-  regulagem = posicao;
+  
   
   if (cont % 4 == 1){
-    String comando = "/turn/";
+    String comando = "turn/";
     String comando_final = comando + regulagem;
     Serial1.println(comando_final);
+    Serial.println(regulagem);
   }
    
   
 
   else if (cont % 4 == 2){
-    String comando = "/speed/";
+    String comando = "speed/";
     String comando_final = comando + regulagem;
     Serial1.println(comando_final);
+    Serial.println(regulagem);
+    
    }
 
   else if (cont % 4 == 3){
     
    if (regulagem >= 0){
-     String comando = "/f/";
+     String comando = "f/";
      String comando_final = comando + regulagem;
      Serial1.println(comando_final);
+     Serial.println(regulagem);
     
    }
    
    else if (regulagem < 0){
-     String comando = "/t/";
-     String comando_final = comando + regulagem;
+     String comando = "b/";
+     String comando_final = comando + abs(regulagem);
      Serial1.println(comando_final);
+     Serial.println(regulagem);
     }
    
    
