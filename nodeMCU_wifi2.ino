@@ -16,7 +16,7 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
-String endereco = "http://99f3-139-82-11-15.ngrok.io";
+String endereco = "http://dab5-139-82-11-60.ngrok.io/";
 
 void setup() {
 
@@ -44,38 +44,39 @@ void loop() {
 
     WiFiClient client;
 
-    HTTPClient http;
-
-    Serial.print("[HTTP] begin...\n");
+    
 
     if (Serial.available() > 0) {
-       String texto = Serial.readStringUntil('\n');
-       texto.trim();
-       Serial.println(texto);
-       String pagina = endereco + texto;
+      
+      String texto = Serial.readStringUntil('\n');
+      texto.trim();
+      Serial.println(texto);
+      String pagina = endereco + texto;
+      Serial.println(pagina);
 
-
-       http.begin(client, pagina);
-       Serial.print("[HTTP] GET...\n");
+      HTTPClient http;
+      http.begin(client, pagina);
+      Serial.print("[HTTP] GET...\n");
       // start connection and send HTTP header
-       int httpCode = http.GET();
+      int httpCode = http.GET();
 
       // httpCode will be negative on error
-       if (httpCode > 0) {
+      if (httpCode > 0) {
         // HTTP header has been send and Server response header has been handled
         Serial.printf("[HTTP] GET... code: %d\n", httpCode);
 
         // file found at server
-       if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+        if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
           String payload = http.getString();
           Serial.println(payload);
-    }
+        }
 
-      
+
+      }
+      http.end();
+
     }
     
-    }
-    http.end(); 
   }
 
 
