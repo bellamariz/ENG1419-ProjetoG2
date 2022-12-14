@@ -13,15 +13,22 @@ def homepage():
     return render_template("index.html")
 
 @app.route("/turn/<int:x>")
-def girar(x):
+def girarDir(x):
     comando = "car.setAngle(" + str(abs(x)) + ")\n"
+    comando += "execute(car.turn)\n"
+    codigo_base(comando)
+    return comando
+
+@app.route("/turn/-<int:x>")
+def girarEsq(x):
+    comando = "car.setAngle(" + str(-x) + ")\n"
     comando += "execute(car.turn)\n"
     codigo_base(comando)
     return comando
 
 @app.route("/speed/<int:y>")
 def velocidade(y):
-    comando = "car.setSpeed(" + str(y/100) + ")\n"
+    comando = "car.setSpeed(" + str(y/100.0) + ")\n"
     codigo_base(comando)
     return comando
 
