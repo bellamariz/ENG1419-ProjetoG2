@@ -17,6 +17,6 @@ A biblioteca **RPi.GPIO** deve ser usada para leitura do encoder, porém ela só
 
 ## Projeto
 
-Para rodar o servidor do Blocky, executar o arquivo `Interface\server.py'.
+Para rodar o servidor do Blocky, executar o arquivo `Interface\server.py`.
 
 `python server.py`
